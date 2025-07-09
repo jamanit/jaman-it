@@ -44,7 +44,7 @@
     @endif
 </head>
 
-<body class="font-inter min-h-screen flex flex-col bg-slate-950 text-white">
+<body class="font-inter min-h-screen flex flex-col bg-slate-950 text-white" x-data="{ postModal: false, post: {}, serviceModal: false }">
     @include('layouts.navbar')
 
     <main class="flex-grow">

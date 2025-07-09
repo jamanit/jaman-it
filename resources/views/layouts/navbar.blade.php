@@ -31,20 +31,18 @@
                             </svg>
                         </button>
                         <ul x-show="open" x-transition class="absolute z-20 left-0 mt-2 w-40 bg-slate-800 text-white rounded-lg shadow-lg transition duration-300 overflow-hidden">
+                            @foreach ($services->take(5) as $service)
+                                <li>
+                                    <a href="{{ url($service->slug) }}" target="_blank" @click="active = 'Services'; activeSub = '{{ $service->title }}'" :class="activeSub === '{{ $service->title }}' ? 'bg-pink-500' : ''" class="block px-4 py-2 hover:bg-pink-500 transition duration-200">
+                                        {{ $service->title }}
+                                    </a>
+                                </li>
+                            @endforeach
+
                             <li>
-                                <a href="#" @click="active = 'Services'; activeSub = 'Chat AI'" :class="activeSub === 'Chat AI' ? 'bg-pink-500' : ''" class="block px-4 py-2 hover:bg-pink-500 transition duration-200">Chat AI</a>
-                            </li>
-                            <li>
-                                <a href="#" @click="active = 'Services'; activeSub = 'JPG to PDF'" :class="activeSub === 'JPG to PDF' ? 'bg-pink-500' : ''" class="block px-4 py-2 hover:bg-pink-500 transition duration-200">JPG to PDF</a>
-                            </li>
-                            <li>
-                                <a href="#" @click="active = 'Services'; activeSub = 'Word to PDF'" :class="activeSub === 'Word to PDF' ? 'bg-pink-500' : ''" class="block px-4 py-2 hover:bg-pink-500 transition duration-200">Word to PDF</a>
-                            </li>
-                            <li>
-                                <a href="#" @click="active = 'Services'; activeSub = 'Image Compressor'" :class="activeSub === 'Image Compressor' ? 'bg-pink-500' : ''" class="block px-4 py-2 hover:bg-pink-500 transition duration-200">Image Compressor</a>
-                            </li>
-                            <li>
-                                <a href="#" @click="active = 'Services'; activeSub = 'View All Services'" :class="activeSub === 'View All Services' ? 'bg-pink-500' : ''" class="block px-4 py-2 hover:bg-pink-500 transition duration-200">View All Services</a>
+                                <a href="javascript:void(0)" @click="active = 'Services'; activeSub = 'View All Services'; serviceModal = true" :class="activeSub === 'View All Services' ? 'bg-pink-500' : ''" class="block px-4 py-2 hover:bg-pink-500 transition duration-200">
+                                    View All Services
+                                </a>
                             </li>
                         </ul>
                     </li>
@@ -124,32 +122,16 @@
                     </svg>
                 </button>
                 <ul x-show="activeDropdown === 'Services'" x-transition class="mt-1 space-y-1 bg-white text-black rounded-lg shadow-lg p-4">
+                    @foreach ($services->take(5) as $service)
+                        <li>
+                            <a href="{{ url($service->slug) }}" target="_blank" @click="activeDropdownLink = '{{ $service->title }}'; sidebarOpen = false" class="group relative inline-block py-1 text-sm font-medium text-black transition duration-300 hover:text-violet-700">
+                                {{ $service->title }}
+                                <span class="absolute left-0 bottom-0 h-[2px] bg-violet-500 transition-all duration-300 ease-in-out" :class="activeDropdownLink === '{{ $service->title }}' ? 'w-full' : 'w-0 group-hover:w-full'"></span>
+                            </a>
+                        </li>
+                    @endforeach
                     <li>
-                        <a href="#" @click="activeDropdownLink = 'Chat AI'; sidebarOpen = false" class="group relative inline-block py-1 text-sm font-medium text-black transition duration-300 hover:text-violet-700">
-                            Chat AI
-                            <span class="absolute left-0 bottom-0 h-[2px] bg-violet-500 transition-all duration-300 ease-in-out" :class="activeDropdownLink === 'Chat AI' ? 'w-full' : 'w-0 group-hover:w-full'"></span>
-                        </a>
-                    </li>
-                    <li>
-                        <a href="#" @click="activeDropdownLink = 'JPG to PDF'; sidebarOpen = false" class="group relative inline-block py-1 text-sm font-medium text-black transition duration-300 hover:text-violet-700">
-                            JPG to PDF
-                            <span class="absolute left-0 bottom-0 h-[2px] bg-violet-500 transition-all duration-300 ease-in-out" :class="activeDropdownLink === 'JPG to PDF' ? 'w-full' : 'w-0 group-hover:w-full'"></span>
-                        </a>
-                    </li>
-                    <li>
-                        <a href="#" @click="activeDropdownLink = 'Word to PDF'; sidebarOpen = false" class="group relative inline-block py-1 text-sm font-medium text-black transition duration-300 hover:text-violet-700">
-                            Word to PDF
-                            <span class="absolute left-0 bottom-0 h-[2px] bg-violet-500 transition-all duration-300 ease-in-out" :class="activeDropdownLink === 'Word to PDF' ? 'w-full' : 'w-0 group-hover:w-full'"></span>
-                        </a>
-                    </li>
-                    <li>
-                        <a href="#" @click="activeDropdownLink = 'Image Compressor'; sidebarOpen = false" class="group relative inline-block py-1 text-sm font-medium text-black transition duration-300 hover:text-violet-700">
-                            Image Compressor
-                            <span class="absolute left-0 bottom-0 h-[2px] bg-violet-500 transition-all duration-300 ease-in-out" :class="activeDropdownLink === 'Image Compressor' ? 'w-full' : 'w-0 group-hover:w-full'"></span>
-                        </a>
-                    </li>
-                    <li>
-                        <a href="#" @click="activeDropdownLink = 'View All Services'; sidebarOpen = false" class="group relative inline-block py-1 text-sm font-medium text-black transition duration-300 hover:text-violet-700">
+                        <a href="javascript:void(0)" @click="activeDropdownLink = 'View All Services'; serviceModal = true; sidebarOpen = false" class="group relative inline-block py-1 text-sm font-medium text-black transition duration-300 hover:text-violet-700">
                             View All Services
                             <span class="absolute left-0 bottom-0 h-[2px] bg-violet-500 transition-all duration-300 ease-in-out" :class="activeDropdownLink === 'View All Services' ? 'w-full' : 'w-0 group-hover:w-full'"></span>
                         </a>

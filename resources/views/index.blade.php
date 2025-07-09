@@ -4,122 +4,118 @@
 
 @section('content')
     <!-- Hero Section -->
-    <div x-data="{ serviceModal: false }">
-        <section id="home" class="py-32 min-h-screen bg-cover bg-center relative" style="background-image: url('{{ asset('assets/images/space-bg.jpg') }}')">
-            <div class="absolute inset-0 bg-black/50"></div>
-            <div class="relative z-10 px-4 sm:px-6 lg:px-12 xl:px-20 text-center">
-                <h1 class="text-5xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-blue-400 to-pink-500 mb-4">Explore Our Free Online Tools</h1>
-                <p class="text-lg text-gray-300 mb-8">Discover various smart and handy services, all free and instantly accessible.</p>
+    <section id="home" class="py-32 min-h-screen bg-cover bg-center relative" style="background-image: url('{{ asset('assets/images/space-bg.jpg') }}')">
+        <div class="absolute inset-0 bg-black/50"></div>
+        <div class="relative z-10 px-4 sm:px-6 lg:px-12 xl:px-20 text-center">
+            <h1 class="text-5xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-blue-400 to-pink-500 mb-4">Explore Our Free Online Tools</h1>
+            <p class="text-lg text-gray-300 mb-8">Discover various smart and handy services, all free and instantly accessible.</p>
 
-                @php
-                    $serviceBadgeColors = [
-                        ['bg-blue-600 hover:bg-blue-700'],
-                        ['bg-pink-600 hover:bg-pink-700'],
-                        ['bg-yellow-500 hover:bg-yellow-700'],
-                        ['bg-green-600 hover:bg-green-700'],
-                        ['bg-purple-600 hover:bg-purple-700'],
-                        ['bg-red-600 hover:bg-red-700'],
-                        ['bg-sky-600 hover:bg-sky-700'],
-                        ['bg-rose-600 hover:bg-rose-700'],
-                        ['bg-amber-600 hover:bg-amber-700'],
-                        ['bg-lime-600 hover:bg-lime-700'],
-                        ['bg-indigo-600 hover:bg-indigo-700'],
-                        ['bg-fuchsia-600 hover:bg-fuchsia-700'],
-                    ];
-                    shuffle($serviceBadgeColors);
-                @endphp
+            @php
+                $serviceBadgeColors = [
+                    ['bg-blue-600 hover:bg-blue-700'],
+                    ['bg-pink-600 hover:bg-pink-700'],
+                    ['bg-yellow-500 hover:bg-yellow-700'],
+                    ['bg-green-600 hover:bg-green-700'],
+                    ['bg-purple-600 hover:bg-purple-700'],
+                    ['bg-red-600 hover:bg-red-700'],
+                    ['bg-sky-600 hover:bg-sky-700'],
+                    ['bg-rose-600 hover:bg-rose-700'],
+                    ['bg-amber-600 hover:bg-amber-700'],
+                    ['bg-lime-600 hover:bg-lime-700'],
+                    ['bg-indigo-600 hover:bg-indigo-700'],
+                    ['bg-fuchsia-600 hover:bg-fuchsia-700'],
+                ];
+                shuffle($serviceBadgeColors);
+            @endphp
 
-                <div class="flex flex-wrap justify-center gap-4">
-                    @foreach ($services->take(5) as $index => $service)
-                        @php $color = $serviceBadgeColors[$index % count($serviceBadgeColors)]; @endphp
-                        <a href="{{ $service->slug }}" target="_blank" class="px-5 py-3 {{ $color[0] }} text-white rounded-full transition shadow-lg animate-bounce">{{ $service->title }}</a>
-                    @endforeach
-                </div>
+            <div class="flex flex-wrap justify-center gap-4">
+                @foreach ($services->take(5) as $index => $service)
+                    @php $color = $serviceBadgeColors[$index % count($serviceBadgeColors)]; @endphp
+                    <a href="{{ url($service->slug) }}" target="_blank" class="px-5 py-3 {{ $color[0] }} text-white rounded-full transition shadow-lg animate-bounce">{{ $service->title }}</a>
+                @endforeach
+            </div>
 
-                <div class="mt-10">
-                    <a href="javascript:void(0)" @click.prevent="serviceModal = true" class="inline-block px-8 py-4 bg-gradient-to-r from-blue-500 to-pink-500 text-white font-semibold rounded-full hover:scale-105 transform transition shadow-lg">
-                        Explore Services
+            <div class="mt-10">
+                <a href="javascript:void(0)" @click.prevent="serviceModal = true" class="inline-block px-8 py-4 bg-gradient-to-r from-blue-500 to-pink-500 text-white font-semibold rounded-full hover:scale-105 transform transition shadow-lg">
+                    Explore Services
+                </a>
+            </div>
+        </div>
+    </section>
+
+    <!-- Modal Services -->
+    <div x-show="serviceModal" x-cloak x-transition class="fixed inset-0 z-50 flex items-center justify-center bg-black/70 px-4">
+        <div @click.away="serviceModal = false" class="bg-gradient-to-br from-slate-800 to-slate-900 text-white rounded-xl shadow-2xl max-w-5xl w-full max-h-[90vh] overflow-y-auto p-6" x-transition:enter="transition ease-out duration-300" x-transition:enter-start="opacity-0 scale-95" x-transition:enter-end="opacity-100 scale-100" x-transition:leave="transition ease-in duration-200"
+            x-transition:leave-start="opacity-100 scale-100" x-transition:leave-end="opacity-0 scale-95">
+            <div class="flex justify-between items-center mb-6">
+                <h2 class="text-2xl font-bold">All Services</h2>
+                <button @click="serviceModal = false" class="cursor-pointer flex items-center justify-center w-10 h-10 hover:bg-slate-700 text-slate-300 hover:text-white rounded-full transition duration-200" aria-label="Close Modal">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12" />
+                    </svg>
+                </button>
+            </div>
+
+            @php
+                shuffle($serviceBadgeColors);
+            @endphp
+
+            <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6">
+                @foreach ($services as $index => $service)
+                    @php $color = $serviceBadgeColors[$index % count($serviceBadgeColors)]; @endphp
+                    <a href="{{ url($service->slug) }}" target="_blank" class="block p-4 rounded-lg shadow-md hover:shadow-lg transition text-white {{ $color[0] }}">
+                        <h3 class="text-lg font-semibold mb-2">{{ $service->title }}</h3>
+                        <p class="text-sm text-white/80">{{ Str::limit(strip_tags($service->description), 80) }}</p>
                     </a>
-                </div>
+                @endforeach
             </div>
-        </section>
 
-        <!-- Modal Services -->
-        <div x-show="serviceModal" x-cloak x-transition class="fixed inset-0 z-50 flex items-center justify-center bg-black/70 px-4">
-            <div @click.away="serviceModal = false" class="bg-gradient-to-br from-slate-800 to-slate-900 text-white rounded-xl shadow-2xl max-w-5xl w-full max-h-[90vh] overflow-y-auto p-6" x-transition:enter="transition ease-out duration-300" x-transition:enter-start="opacity-0 scale-95" x-transition:enter-end="opacity-100 scale-100" x-transition:leave="transition ease-in duration-200"
-                x-transition:leave-start="opacity-100 scale-100" x-transition:leave-end="opacity-0 scale-95">
-                <div class="flex justify-between items-center mb-6">
-                    <h2 class="text-2xl font-bold">All Services</h2>
-                    <button @click="serviceModal = false" class="cursor-pointer flex items-center justify-center w-10 h-10 hover:bg-slate-700 text-slate-300 hover:text-white rounded-full transition duration-200" aria-label="Close Modal">
-                        <svg xmlns="http://www.w3.org/2000/svg" class="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
-                            <path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12" />
-                        </svg>
-                    </button>
-                </div>
-
-                @php
-                    shuffle($serviceBadgeColors);
-                @endphp
-
-                <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6">
-                    @foreach ($services as $index => $service)
-                        @php $color = $serviceBadgeColors[$index % count($serviceBadgeColors)]; @endphp
-                        <a href="{{ $service->slug }}" target="_blank" class="block p-4 rounded-lg shadow-md hover:shadow-lg transition text-white {{ $color[0] }}">
-                            <h3 class="text-lg font-semibold mb-2">{{ $service->title }}</h3>
-                            <p class="text-sm text-white/80">{{ Str::limit(strip_tags($service->description), 80) }}</p>
-                        </a>
-                    @endforeach
-                </div>
-
-            </div>
         </div>
     </div>
 
     <!-- Posts Section -->
-    <div x-data="{ postModal: false, post: {} }">
-        <section id="post" class="py-24">
-            <div class="px-4 sm:px-6 lg:px-12 xl:px-20">
-                <h2 class="text-2xl font-bold mb-6 text-white">Latest Posts</h2>
+    <section id="post" class="py-24">
+        <div class="px-4 sm:px-6 lg:px-12 xl:px-20">
+            <h2 class="text-2xl font-bold mb-6 text-white">Latest Posts</h2>
 
-                @if ($posts->isEmpty())
-                    <div class="bg-slate-800 text-white rounded-xl shadow-lg p-8 text-center max-w-xl mx-auto mb-10">
-                        <h2 class="text-2xl font-bold mb-2">No Posts Available</h2>
-                        <p class="text-gray-400">There are currently no published posts. Please check back later.</p>
-                    </div>
-                @else
-                    <div id="post-list" class="grid grid-cols-1 md:grid-cols-3 gap-8 mb-10">
-                        @include('posts.post-card', ['posts' => $posts])
-                    </div>
+            @if ($posts->isEmpty())
+                <div class="bg-slate-800 text-white rounded-xl shadow-lg p-8 text-center max-w-xl mx-auto mb-10">
+                    <h2 class="text-2xl font-bold mb-2">No Posts Available</h2>
+                    <p class="text-gray-400">There are currently no published posts. Please check back later.</p>
+                </div>
+            @else
+                <div id="post-list" class="grid grid-cols-1 md:grid-cols-3 gap-8 mb-10">
+                    @include('posts.post-card', ['posts' => $posts])
+                </div>
 
-                    <div class="text-center">
-                        <button id="post-load-more" class="cursor-pointer inline-block px-6 py-3 bg-gradient-to-r from-blue-500 to-pink-500 text-white font-semibold rounded-full shadow-lg hover:scale-105 transition duration-300" data-offset="{{ count($posts) }}">
-                            See more
-                        </button>
-                    </div>
-                @endif
-            </div>
-        </section>
-
-        <!-- Modal Post -->
-        <div x-show="postModal" x-cloak x-transition.opacity.duration.300ms class="fixed inset-0 z-50 flex items-center justify-center bg-black/70 px-4">
-            <div @click.away="postModal = false" class="bg-gradient-to-br from-slate-800 to-slate-900 text-white rounded-xl shadow-2xl max-w-2xl w-full max-h-[90vh] flex flex-col transform transition-all duration-300 scale-95" x-transition:enter="ease-out duration-300" x-transition:enter-start="opacity-0 scale-90" x-transition:enter-end="opacity-100 scale-100" x-transition:leave="ease-in duration-200"
-                x-transition:leave-start="opacity-100 scale-100" x-transition:leave-end="opacity-0 scale-90">
-                <div class="flex justify-between items-center px-6 py-4 border-b border-slate-700 flex-shrink-0">
-                    <h2 class="text-lg font-semibold" x-text="post.title"></h2>
-                    <button @click="postModal = false" class="cursor-pointer flex items-center justify-center w-10 h-10 hover:bg-slate-700 text-slate-300 hover:text-white rounded-full transition duration-200" aria-label="Close Modal">
-                        <svg xmlns="http://www.w3.org/2000/svg" class="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
-                            <path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12" />
-                        </svg>
+                <div class="text-center">
+                    <button id="post-load-more" class="cursor-pointer inline-block px-6 py-3 bg-gradient-to-r from-blue-500 to-pink-500 text-white font-semibold rounded-full shadow-lg hover:scale-105 transition duration-300" data-offset="{{ count($posts) }}">
+                        See more
                     </button>
                 </div>
+            @endif
+        </div>
+    </section>
 
-                <div class="p-6 mb-4 overflow-y-auto space-y-4" style="max-height: calc(90vh - 80px); padding-bottom: 2rem;">
-                    <template x-if="post.image">
-                        <img :src="post.image" alt="Image" class="w-full h-78 object-cover rounded-lg shadow-md">
-                    </template>
-                    <p class="text-sm text-slate-400" x-text="post.date"></p>
-                    <div class="text-slate-100 text-base leading-relaxed" x-html="post.content"></div>
-                </div>
+    <!-- Modal Post -->
+    <div x-show="postModal" x-cloak x-transition.opacity.duration.300ms class="fixed inset-0 z-50 flex items-center justify-center bg-black/70 px-4">
+        <div @click.away="postModal = false" class="bg-gradient-to-br from-slate-800 to-slate-900 text-white rounded-xl shadow-2xl max-w-2xl w-full max-h-[90vh] flex flex-col transform transition-all duration-300 scale-95" x-transition:enter="ease-out duration-300" x-transition:enter-start="opacity-0 scale-90" x-transition:enter-end="opacity-100 scale-100" x-transition:leave="ease-in duration-200"
+            x-transition:leave-start="opacity-100 scale-100" x-transition:leave-end="opacity-0 scale-90">
+            <div class="flex justify-between items-center px-6 py-4 border-b border-slate-700 flex-shrink-0">
+                <h2 class="text-lg font-semibold" x-text="post.title"></h2>
+                <button @click="postModal = false" class="cursor-pointer flex items-center justify-center w-10 h-10 hover:bg-slate-700 text-slate-300 hover:text-white rounded-full transition duration-200" aria-label="Close Modal">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12" />
+                    </svg>
+                </button>
+            </div>
+
+            <div class="p-6 mb-4 overflow-y-auto space-y-4" style="max-height: calc(90vh - 80px); padding-bottom: 2rem;">
+                <template x-if="post.image">
+                    <img :src="post.image" alt="Image" class="w-full h-78 object-cover rounded-lg shadow-md">
+                </template>
+                <p class="text-sm text-slate-400" x-text="post.date"></p>
+                <div class="text-slate-100 text-base leading-relaxed" x-html="post.content"></div>
             </div>
         </div>
     </div>
