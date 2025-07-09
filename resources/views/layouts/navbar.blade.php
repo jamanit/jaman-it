@@ -3,7 +3,7 @@
     <div x-data="navbarScroll()" x-init="init()" class="px-4 sm:px-6 lg:px-12 xl:px-20 mt-2 fixed top-0 left-0 right-0 z-20">
         <nav id="navbar" :class="scrolled ? 'bg-gradient-to-r from-violet-600 to-pink-600 shadow-md' : 'bg-slate-800/50'" class="transition duration-500 ease-in-out rounded-xl backdrop-blur-md">
             <div class="flex justify-between items-center px-6 py-2">
-                <a href="#">
+                <a href="/">
                     @if ($settingItems['logo']->value && Storage::disk('public')->exists($settingItems['logo']->value))
                         <img src="{{ Storage::url($settingItems['logo']->value) }}" alt="Logo" class="h-10 rounded" />
                     @else
@@ -21,7 +21,7 @@
                 <!-- Menu desktop -->
                 <ul x-data="{ active: 'Home', activeSub: '' }" class="hidden md:flex items-center space-x-6 font-medium">
                     <li>
-                        <a href="#home" @click="active = 'Home'; activeSub = ''" :class="active === 'Home' ? 'bg-pink-500' : ''" class="p-2 text-white hover:bg-pink-500 rounded-lg transition duration-300">Home</a>
+                        <a href="/" @click="active = 'Home'; activeSub = ''" :class="active === 'Home' ? 'bg-pink-500' : ''" class="p-2 text-white hover:bg-pink-500 rounded-lg transition duration-300">Home</a>
                     </li>
                     <li class="relative group" x-data="{ open: false }" @mouseenter="open = true" @mouseleave="open = false">
                         <button @click.prevent="active = 'Services'" :class="active === 'Services' ? 'bg-pink-500' : ''" class="p-2 text-white hover:bg-pink-500 rounded-lg transition duration-300 inline-flex items-center gap-1">
@@ -73,7 +73,7 @@
         </div>
         <ul x-data="{ active: '', activeDropdown: '' }" class="p-6 space-y-3 font-medium">
             <li>
-                <a href="#" @click="active = 'Home'; activeDropdown = ''; activeDropdownLink = ''; sidebarOpen = false" :class="active === 'Home' ? 'bg-violet-500' : ''" class="flex items-center gap-2 px-4 py-2 rounded-lg hover:bg-violet-500 transition duration-300">
+                <a href="/" @click="active = 'Home'; activeDropdown = ''; activeDropdownLink = ''; sidebarOpen = false" :class="active === 'Home' ? 'bg-violet-500' : ''" class="flex items-center gap-2 px-4 py-2 rounded-lg hover:bg-violet-500 transition duration-300">
                     <svg class="h-5 w-5" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
                         <g id="SVGRepo_bgCarrier" stroke-width="0"></g>
                         <g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g>
