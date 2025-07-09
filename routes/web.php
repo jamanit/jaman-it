@@ -11,6 +11,7 @@ use App\Http\Controllers\SocialiteController;
 
 Route::get('/', [HomeController::class, 'index'])->name('home.index');
 Route::post('/loadMorePost', [HomeController::class, 'loadMorePost'])->name('home.loadMorePost');
+Route::post('/send-message', [HomeController::class, 'sendMessage'])->name('home.sendMessage');
 
 Route::get('/auth/{provider}/redirect', [SocialiteController::class, 'redirect'])->name('socialite.redirect');
 Route::get('/auth/{provider}/callback', [SocialiteController::class, 'callback'])->name('socialite.callback');

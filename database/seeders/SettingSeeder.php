@@ -53,11 +53,11 @@ class SettingSeeder extends Seeder
                 'name'            => 'Meta',
                 'key'             => 'meta',
                 'type'            => 'textarea',
-                'value'           => '<meta name="description" content="Discover various smart and handy tools, all free and instantly accessible." />
-    <meta name="keywords" content="jaman it, tools online" />
+                'value'           => '<meta name="description" content="Discover various smart and handy services, all free and instantly accessible." />
+    <meta name="keywords" content="jaman it, services online" />
     <meta name="author" content="Jaman IT Team" />
-    <meta property="og:title" content="Jaman IT - Explore Our Free Online Tools" />
-    <meta property="og:description" content="Discover various smart and handy tools, all free and instantly accessible." />
+    <meta property="og:title" content="Jaman IT - Explore Our Free Online Services" />
+    <meta property="og:description" content="Discover various smart and handy services, all free and instantly accessible." />
     <meta property="og:image" content="images/favicon.png" />
     <meta property="og:url" content="https://github.com/jamanit" />
     <meta property="og:type" content="website" />',
@@ -67,7 +67,7 @@ class SettingSeeder extends Seeder
                 'name'            => 'About',
                 'key'             => 'about',
                 'type'            => 'textarea_editor',
-                'value'           => '<p>Jaman IT menyediakan berbagai alat online gratis yang memudahkan hidup Anda. Mulai dari kompresi gambar, konversi dokumen, hingga layanan berbasis AI — semua tersedia secara instan dan tanpa biaya. Kami percaya bahwa teknologi harus dapat diakses oleh siapa saja, kapan saja.</p>',
+                'value'           => '<p>Jaman IT menyediakan berbagai layanan online gratis yang memudahkan hidup Anda. Mulai dari kompresi gambar, konversi dokumen, hingga layanan berbasis AI — semua tersedia secara instan dan tanpa biaya. Kami percaya bahwa teknologi harus dapat diakses oleh siapa saja, kapan saja.</p>',
             ],
             [
                 'setting_id' => $settings['contact']->uuid,

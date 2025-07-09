@@ -11,7 +11,7 @@ class Post extends Model
 {
     use HasFactory, HasUuids;
 
-    protected $guarded;
+    protected $guarded = [];
 
     public $incrementing = true;
 

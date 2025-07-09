@@ -23,6 +23,31 @@
                     <li>
                         <a href="#home" @click="active = 'Home'; activeSub = ''" :class="active === 'Home' ? 'bg-pink-500' : ''" class="p-2 text-white hover:bg-pink-500 rounded-lg transition duration-300">Home</a>
                     </li>
+                    <li class="relative group" x-data="{ open: false }" @mouseenter="open = true" @mouseleave="open = false">
+                        <button @click.prevent="active = 'Services'" :class="active === 'Services' ? 'bg-pink-500' : ''" class="p-2 text-white hover:bg-pink-500 rounded-lg transition duration-300 inline-flex items-center gap-1">
+                            Services
+                            <svg class="w-4 h-4 mt-0.5 transition-transform duration-300" :class="open ? 'rotate-180' : ''" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" d="M19 9l-7 7-7-7" />
+                            </svg>
+                        </button>
+                        <ul x-show="open" x-transition class="absolute z-20 left-0 mt-2 w-40 bg-slate-800 text-white rounded-lg shadow-lg transition duration-300 overflow-hidden">
+                            <li>
+                                <a href="#" @click="active = 'Services'; activeSub = 'Chat AI'" :class="activeSub === 'Chat AI' ? 'bg-pink-500' : ''" class="block px-4 py-2 hover:bg-pink-500 transition duration-200">Chat AI</a>
+                            </li>
+                            <li>
+                                <a href="#" @click="active = 'Services'; activeSub = 'JPG to PDF'" :class="activeSub === 'JPG to PDF' ? 'bg-pink-500' : ''" class="block px-4 py-2 hover:bg-pink-500 transition duration-200">JPG to PDF</a>
+                            </li>
+                            <li>
+                                <a href="#" @click="active = 'Services'; activeSub = 'Word to PDF'" :class="activeSub === 'Word to PDF' ? 'bg-pink-500' : ''" class="block px-4 py-2 hover:bg-pink-500 transition duration-200">Word to PDF</a>
+                            </li>
+                            <li>
+                                <a href="#" @click="active = 'Services'; activeSub = 'Image Compressor'" :class="activeSub === 'Image Compressor' ? 'bg-pink-500' : ''" class="block px-4 py-2 hover:bg-pink-500 transition duration-200">Image Compressor</a>
+                            </li>
+                            <li>
+                                <a href="#" @click="active = 'Services'; activeSub = 'View All Services'" :class="activeSub === 'View All Services' ? 'bg-pink-500' : ''" class="block px-4 py-2 hover:bg-pink-500 transition duration-200">View All Services</a>
+                            </li>
+                        </ul>
+                    </li>
                     <li>
                         <a href="#post" @click="active = 'Post'; activeSub = ''" :class="active === 'Post' ? 'bg-pink-500' : ''" class="p-2 text-white hover:bg-pink-500 rounded-lg transition duration-300">Post</a>
                     </li>
@@ -31,31 +56,6 @@
                     </li>
                     <li>
                         <a href="#contact" @click="active = 'Contact'; activeSub = ''" :class="active === 'Contact' ? 'bg-pink-500' : ''" class="p-2 text-white hover:bg-pink-500 rounded-lg transition duration-300">Contact</a>
-                    </li>
-                    <li class="relative group" x-data="{ open: false }" @mouseenter="open = true" @mouseleave="open = false">
-                        <button @click.prevent="active = 'Tools'" :class="active === 'Tools' ? 'bg-pink-500' : ''" class="p-2 text-white hover:bg-pink-500 rounded-lg transition duration-300 inline-flex items-center gap-1">
-                            Tools
-                            <svg class="w-4 h-4 mt-0.5 transition-transform duration-300" :class="open ? 'rotate-180' : ''" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
-                                <path stroke-linecap="round" stroke-linejoin="round" d="M19 9l-7 7-7-7" />
-                            </svg>
-                        </button>
-                        <ul x-show="open" x-transition class="absolute z-20 left-0 mt-2 w-40 bg-slate-800 text-white rounded-lg shadow-lg transition duration-300 overflow-hidden">
-                            <li>
-                                <a href="#" @click="active = 'Tools'; activeSub = 'Chat AI'" :class="activeSub === 'Chat AI' ? 'bg-pink-500' : ''" class="block px-4 py-2 hover:bg-pink-500 transition duration-200">Chat AI</a>
-                            </li>
-                            <li>
-                                <a href="#" @click="active = 'Tools'; activeSub = 'JPG to PDF'" :class="activeSub === 'JPG to PDF' ? 'bg-pink-500' : ''" class="block px-4 py-2 hover:bg-pink-500 transition duration-200">JPG to PDF</a>
-                            </li>
-                            <li>
-                                <a href="#" @click="active = 'Tools'; activeSub = 'Word to PDF'" :class="activeSub === 'Word to PDF' ? 'bg-pink-500' : ''" class="block px-4 py-2 hover:bg-pink-500 transition duration-200">Word to PDF</a>
-                            </li>
-                            <li>
-                                <a href="#" @click="active = 'Tools'; activeSub = 'Image Compressor'" :class="activeSub === 'Image Compressor' ? 'bg-pink-500' : ''" class="block px-4 py-2 hover:bg-pink-500 transition duration-200">Image Compressor</a>
-                            </li>
-                            <li>
-                                <a href="#" @click="active = 'Tools'; activeSub = 'View All Tools'" :class="activeSub === 'View All Tools' ? 'bg-pink-500' : ''" class="block px-4 py-2 hover:bg-pink-500 transition duration-200">View All Tools</a>
-                            </li>
-                        </ul>
                     </li>
                 </ul>
             </div>
@@ -95,6 +95,66 @@
                     </svg>
                     Home
                 </a>
+            </li>
+            <li>
+                <button @click.prevent="active = 'Services'; activeDropdown = activeDropdown === 'Services' ? '' : 'Services'" :class="active === 'Services' ? 'bg-violet-500' : ''" class="flex justify-between items-center w-full px-4 py-2 rounded-lg hover:bg-violet-500 transition duration-300">
+                    <div class="flex items-center gap-2">
+                        <svg class="h-6 w-6" viewBox="0 0 48 48" xmlns="http://www.w3.org/2000/svg" fill="#ffffff">
+                            <g id="SVGRepo_bgCarrier" stroke-width="0"></g>
+                            <g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g>
+                            <g id="SVGRepo_iconCarrier">
+                                <g id="Layer_2" data-name="Layer 2">
+                                    <g id="invisible_box" data-name="invisible box">
+                                        <rect width="48" height="48" fill="none"></rect>
+                                        <rect width="48" height="48" fill="none"></rect>
+                                        <rect width="48" height="48" fill="none"></rect>
+                                    </g>
+                                    <g id="icons_Q2" data-name="icons Q2">
+                                        <path d="M28.7,18.8l-1.8,2.9,1.4,1.4,2.9-1.8,1,.4L33,25h2l.8-3.3,1-.4,2.9,1.8,1.4-1.4-1.8-2.9a4.2,4.2,0,0,0,.4-1L43,17V15l-3.3-.8a4.2,4.2,0,0,0-.4-1l1.8-2.9L39.7,8.9l-2.9,1.8-1-.4L35,7H33l-.8,3.3-1,.4L28.3,8.9l-1.4,1.4,1.8,2.9a4.2,4.2,0,0,0-.4,1L25,15v2l3.3.8A4.2,4.2,0,0,0,28.7,18.8ZM34,14a2,2,0,1,1-2,2A2,2,0,0,1,34,14Z"></path>
+                                        <path d="M42.2,28.7a5.2,5.2,0,0,0-4-1.1l-9.9,1.8a4.5,4.5,0,0,0-1.4-3.3L19.8,19H5a2,2,0,0,0-2,2v9a2,2,0,0,0,2,2H8.3l11.2,9.1,20.4-3.7a5,5,0,0,0,2.3-8.7Zm-3,4.8L20.5,36.9,10,28.2V23h8.2l5.9,5.9a.8.8,0,0,1-1.2,1.2l-3.5-3.5a2,2,0,0,0-2.8,2.8l3.5,3.5a4.5,4.5,0,0,0,3.4,1.4,5.7,5.7,0,0,0,1.8-.3h0l13.6-2.4a1.1,1.1,0,0,1,.8.2.9.9,0,0,1,.3.7A1,1,0,0,1,39.2,33.5Z">
+                                        </path>
+                                    </g>
+                                </g>
+                            </g>
+                        </svg>
+                        Services
+                    </div>
+                    <svg class="w-4 h-4 transform transition-transform duration-300 group-[.open]:rotate-180" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M19 9l-7 7-7-7" />
+                    </svg>
+                </button>
+                <ul x-show="activeDropdown === 'Services'" x-transition class="mt-1 space-y-1 bg-white text-black rounded-lg shadow-lg p-4">
+                    <li>
+                        <a href="#" @click="activeDropdownLink = 'Chat AI'; sidebarOpen = false" class="group relative inline-block py-1 text-sm font-medium text-black transition duration-300 hover:text-violet-700">
+                            Chat AI
+                            <span class="absolute left-0 bottom-0 h-[2px] bg-violet-500 transition-all duration-300 ease-in-out" :class="activeDropdownLink === 'Chat AI' ? 'w-full' : 'w-0 group-hover:w-full'"></span>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="#" @click="activeDropdownLink = 'JPG to PDF'; sidebarOpen = false" class="group relative inline-block py-1 text-sm font-medium text-black transition duration-300 hover:text-violet-700">
+                            JPG to PDF
+                            <span class="absolute left-0 bottom-0 h-[2px] bg-violet-500 transition-all duration-300 ease-in-out" :class="activeDropdownLink === 'JPG to PDF' ? 'w-full' : 'w-0 group-hover:w-full'"></span>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="#" @click="activeDropdownLink = 'Word to PDF'; sidebarOpen = false" class="group relative inline-block py-1 text-sm font-medium text-black transition duration-300 hover:text-violet-700">
+                            Word to PDF
+                            <span class="absolute left-0 bottom-0 h-[2px] bg-violet-500 transition-all duration-300 ease-in-out" :class="activeDropdownLink === 'Word to PDF' ? 'w-full' : 'w-0 group-hover:w-full'"></span>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="#" @click="activeDropdownLink = 'Image Compressor'; sidebarOpen = false" class="group relative inline-block py-1 text-sm font-medium text-black transition duration-300 hover:text-violet-700">
+                            Image Compressor
+                            <span class="absolute left-0 bottom-0 h-[2px] bg-violet-500 transition-all duration-300 ease-in-out" :class="activeDropdownLink === 'Image Compressor' ? 'w-full' : 'w-0 group-hover:w-full'"></span>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="#" @click="activeDropdownLink = 'View All Services'; sidebarOpen = false" class="group relative inline-block py-1 text-sm font-medium text-black transition duration-300 hover:text-violet-700">
+                            View All Services
+                            <span class="absolute left-0 bottom-0 h-[2px] bg-violet-500 transition-all duration-300 ease-in-out" :class="activeDropdownLink === 'View All Services' ? 'w-full' : 'w-0 group-hover:w-full'"></span>
+                        </a>
+                    </li>
+                </ul>
             </li>
             <li>
                 <a href="#post" @click="active = 'Post'; activeDropdown = ''; activeDropdownLink = ''; sidebarOpen = false" :class="active === 'Post' ? 'bg-violet-500' : ''" class="flex items-center gap-2 px-4 py-2 rounded-lg hover:bg-violet-500 transition duration-300">
@@ -141,66 +201,6 @@
                     </svg>
                     Contact
                 </a>
-            </li>
-            <li>
-                <button @click.prevent="active = 'Tools'; activeDropdown = activeDropdown === 'Tools' ? '' : 'Tools'" :class="active === 'Tools' ? 'bg-violet-500' : ''" class="flex justify-between items-center w-full px-4 py-2 rounded-lg hover:bg-violet-500 transition duration-300">
-                    <div class="flex items-center gap-2">
-                        <svg class="h-6 w-6" viewBox="0 0 48 48" xmlns="http://www.w3.org/2000/svg" fill="#ffffff">
-                            <g id="SVGRepo_bgCarrier" stroke-width="0"></g>
-                            <g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g>
-                            <g id="SVGRepo_iconCarrier">
-                                <g id="Layer_2" data-name="Layer 2">
-                                    <g id="invisible_box" data-name="invisible box">
-                                        <rect width="48" height="48" fill="none"></rect>
-                                        <rect width="48" height="48" fill="none"></rect>
-                                        <rect width="48" height="48" fill="none"></rect>
-                                    </g>
-                                    <g id="icons_Q2" data-name="icons Q2">
-                                        <path d="M28.7,18.8l-1.8,2.9,1.4,1.4,2.9-1.8,1,.4L33,25h2l.8-3.3,1-.4,2.9,1.8,1.4-1.4-1.8-2.9a4.2,4.2,0,0,0,.4-1L43,17V15l-3.3-.8a4.2,4.2,0,0,0-.4-1l1.8-2.9L39.7,8.9l-2.9,1.8-1-.4L35,7H33l-.8,3.3-1,.4L28.3,8.9l-1.4,1.4,1.8,2.9a4.2,4.2,0,0,0-.4,1L25,15v2l3.3.8A4.2,4.2,0,0,0,28.7,18.8ZM34,14a2,2,0,1,1-2,2A2,2,0,0,1,34,14Z"></path>
-                                        <path d="M42.2,28.7a5.2,5.2,0,0,0-4-1.1l-9.9,1.8a4.5,4.5,0,0,0-1.4-3.3L19.8,19H5a2,2,0,0,0-2,2v9a2,2,0,0,0,2,2H8.3l11.2,9.1,20.4-3.7a5,5,0,0,0,2.3-8.7Zm-3,4.8L20.5,36.9,10,28.2V23h8.2l5.9,5.9a.8.8,0,0,1-1.2,1.2l-3.5-3.5a2,2,0,0,0-2.8,2.8l3.5,3.5a4.5,4.5,0,0,0,3.4,1.4,5.7,5.7,0,0,0,1.8-.3h0l13.6-2.4a1.1,1.1,0,0,1,.8.2.9.9,0,0,1,.3.7A1,1,0,0,1,39.2,33.5Z">
-                                        </path>
-                                    </g>
-                                </g>
-                            </g>
-                        </svg>
-                        Tools
-                    </div>
-                    <svg class="w-4 h-4 transform transition-transform duration-300 group-[.open]:rotate-180" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
-                        <path stroke-linecap="round" stroke-linejoin="round" d="M19 9l-7 7-7-7" />
-                    </svg>
-                </button>
-                <ul x-show="activeDropdown === 'Tools'" x-transition class="mt-1 space-y-1 bg-white text-black rounded-lg shadow-lg p-4">
-                    <li>
-                        <a href="#" @click="activeDropdownLink = 'Chat AI'; sidebarOpen = false" class="group relative inline-block py-1 text-sm font-medium text-black transition duration-300 hover:text-violet-700">
-                            Chat AI
-                            <span class="absolute left-0 bottom-0 h-[2px] bg-violet-500 transition-all duration-300 ease-in-out" :class="activeDropdownLink === 'Chat AI' ? 'w-full' : 'w-0 group-hover:w-full'"></span>
-                        </a>
-                    </li>
-                    <li>
-                        <a href="#" @click="activeDropdownLink = 'JPG to PDF'; sidebarOpen = false" class="group relative inline-block py-1 text-sm font-medium text-black transition duration-300 hover:text-violet-700">
-                            JPG to PDF
-                            <span class="absolute left-0 bottom-0 h-[2px] bg-violet-500 transition-all duration-300 ease-in-out" :class="activeDropdownLink === 'JPG to PDF' ? 'w-full' : 'w-0 group-hover:w-full'"></span>
-                        </a>
-                    </li>
-                    <li>
-                        <a href="#" @click="activeDropdownLink = 'Word to PDF'; sidebarOpen = false" class="group relative inline-block py-1 text-sm font-medium text-black transition duration-300 hover:text-violet-700">
-                            Word to PDF
-                            <span class="absolute left-0 bottom-0 h-[2px] bg-violet-500 transition-all duration-300 ease-in-out" :class="activeDropdownLink === 'Word to PDF' ? 'w-full' : 'w-0 group-hover:w-full'"></span>
-                        </a>
-                    </li>
-                    <li>
-                        <a href="#" @click="activeDropdownLink = 'Image Compressor'; sidebarOpen = false" class="group relative inline-block py-1 text-sm font-medium text-black transition duration-300 hover:text-violet-700">
-                            Image Compressor
-                            <span class="absolute left-0 bottom-0 h-[2px] bg-violet-500 transition-all duration-300 ease-in-out" :class="activeDropdownLink === 'Image Compressor' ? 'w-full' : 'w-0 group-hover:w-full'"></span>
-                        </a>
-                    </li>
-                    <li>
-                        <a href="#" @click="activeDropdownLink = 'View All Tools'; sidebarOpen = false" class="group relative inline-block py-1 text-sm font-medium text-black transition duration-300 hover:text-violet-700">
-                            View All Tools
-                            <span class="absolute left-0 bottom-0 h-[2px] bg-violet-500 transition-all duration-300 ease-in-out" :class="activeDropdownLink === 'View All Tools' ? 'w-full' : 'w-0 group-hover:w-full'"></span>
-                        </a>
-                    </li>
-                </ul>
             </li>
         </ul>
     </div>

@@ -8,7 +8,7 @@
         <div class="absolute inset-0 bg-black/50"></div>
         <div class="relative z-10 px-4 sm:px-6 lg:px-12 xl:px-20 text-center">
             <h1 class="text-5xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-blue-400 to-pink-500 mb-4">Explore Our Free Online Tools</h1>
-            <p class="text-lg text-gray-300 mb-8">Discover various smart and handy tools, all free and instantly accessible.</p>
+            <p class="text-lg text-gray-300 mb-8">Discover various smart and handy services, all free and instantly accessible.</p>
 
             <div class="flex flex-wrap justify-center gap-4">
                 <a href="#" class="px-5 py-3 bg-gray-600 hover:bg-gray-700 text-white rounded-full transition shadow-lg animate-bounce">Chat AI</a>
@@ -91,7 +91,8 @@
             <p class="text-center text-gray-400 mb-12">Have questions or feedback? We'd love to hear from you. Get in touch through the form or via our contact details below.</p>
 
             <div class="grid grid-cols-1 md:grid-cols-2 gap-10">
-                <form class="space-y-6">
+                <form class="space-y-6" id="contact-form" method="POST" action="{{ route('home.sendMessage') }}">
+                    @csrf
                     <div>
                         <label for="name" class="block text-sm font-medium text-gray-300 mb-1">Name</label>
                         <input type="text" id="name" name="name" placeholder="Your Name" class="w-full px-4 py-2 rounded-lg bg-slate-800 text-white border border-slate-700 focus:outline-none focus:ring-2 focus:ring-pink-500" />
@@ -172,6 +173,57 @@
                         }
                     });
             });
+        });
+    </script>
+
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <script>
+        document.getElementById('contact-form').addEventListener('submit', async function(e) {
+            e.preventDefault();
+
+            const form = e.target;
+            const formData = new FormData(form);
+            formData.append('_token', '{{ csrf_token() }}');
+
+            try {
+                const res = await fetch(form.action, {
+                    method: 'POST',
+                    body: formData
+                });
+
+                const data = await res.json();
+
+                if (!res.ok) {
+                    throw data;
+                }
+
+                Swal.fire({
+                    toast: true,
+                    position: 'top-end',
+                    icon: 'success',
+                    title: data.message,
+                    showConfirmButton: false,
+                    timer: 3000,
+                    timerProgressBar: true,
+                    showCloseButton: true,
+                });
+
+                form.reset();
+            } catch (err) {
+                let message = 'There is an error';
+
+                if (err.errors) {
+                    message = Object.values(err.errors).flat().join('\n');
+                } else if (err.message) {
+                    message = err.message;
+                }
+
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Oops...',
+                    text: message,
+                });
+            }
         });
     </script>
 @endpush

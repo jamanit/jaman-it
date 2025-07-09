@@ -7,11 +7,15 @@ use Illuminate\Database\Eloquent\Concerns\HasUuids;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class Category extends Model
+class Message extends Model
 {
     use HasFactory, HasUuids;
 
     protected $guarded = [];
+
+    protected $casts = [
+        'is_read' => 'boolean',
+    ];
 
     public $incrementing = true;
 
@@ -28,10 +32,5 @@ class Category extends Model
     public function getRouteKeyName()
     {
         return 'uuid';
-    }
-
-    public function posts()
-    {
-        return $this->hasMany(Post::class, 'category_id', 'uuid');
     }
 }
