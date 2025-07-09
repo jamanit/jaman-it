@@ -11,16 +11,17 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('posts', function (Blueprint $table) {
+        Schema::create('services', function (Blueprint $table) {
             $table->id();
             $table->uuid('uuid')->unique();
-            $table->foreignUuid('user_id')->references('uuid')->on('users')->nullOnDelete();
             $table->foreignUuid('category_id')->references('uuid')->on('categories')->nullOnDelete();
-            $table->string('image')->nullable();
-            $table->string('title', 255);
-            $table->enum('status', ['draft', 'publish'])->default('draft');
-            $table->integer('view_total')->default(0);
+            $table->string('thumbnail')->nullable();
+            $table->string('title');
+            $table->string('slug')->unique();
+            $table->text('description')->nullable();
             $table->text('content')->nullable();
+            $table->integer('view_total')->default(0);
+            $table->boolean('is_active')->default(true);
             $table->timestamps();
         });
     }
@@ -30,6 +31,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('posts');
+        Schema::dropIfExists('services');
     }
 };

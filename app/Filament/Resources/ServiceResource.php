@@ -2,9 +2,9 @@
 
 namespace App\Filament\Resources;
 
-use App\Filament\Resources\PostResource\Pages;
-use App\Filament\Resources\PostResource\RelationManagers;
-use App\Models\Post;
+use App\Filament\Resources\ServiceResource\Pages;
+use App\Filament\Resources\ServiceResource\RelationManagers;
+use App\Models\Service;
 use Filament\Forms;
 use Filament\Forms\Form;
 use Filament\Resources\Resource;
@@ -13,26 +13,24 @@ use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
 
-class PostResource extends Resource
+class ServiceResource extends Resource
 {
-    protected static ?string $model = Post::class;
+    protected static ?string $model = Service::class;
 
-    protected static ?string $navigationIcon = 'heroicon-o-document-text';
-    protected static ?int $navigationSort     = 41;
+    protected static ?string $navigationIcon = 'heroicon-o-sparkles';
+    protected static ?int $navigationSort    = 31;
 
     public static function form(Form $form): Form
     {
         return $form
             ->schema([
-                \Filament\Forms\Components\Hidden::make('user_id')
-                    ->default(fn() => \Illuminate\Support\Facades\Auth::user()?->uuid),
                 Forms\Components\Grid::make(2)
                     ->schema([
-                        \Filament\Forms\Components\FileUpload::make('image')
-                            ->label('Image')
+                        \Filament\Forms\Components\FileUpload::make('thumbnail')
+                            ->label('Thumbnail')
                             ->nullable()
                             ->image()
-                            ->directory('posts')
+                            ->directory('services')
                             ->disk('public')
                             ->enableOpen()
                             // ->enableDownload()
@@ -40,7 +38,7 @@ class PostResource extends Resource
                             ->deleteUploadedFileUsing(function ($file, $record) {
                                 \Illuminate\Support\Facades\Storage::disk('public')->delete($file);
                                 $record->update([
-                                    'image' => null,
+                                    'thumbnail' => null,
                                 ]);
                             }),
                     ]),
@@ -57,6 +55,14 @@ class PostResource extends Resource
                     ->relationship('category', 'name', function ($query) {
                         $query->orderBy('name', 'asc');
                     }),
+                Forms\Components\TextInput::make('slug')
+                    ->label('Slug')
+                    ->required()
+                    ->unique(Service::class, 'slug', ignoreRecord: true),
+                Forms\Components\Textarea::make('description')
+                    ->label('Description')
+                    ->rows(4)
+                    ->nullable(),
                 \Filament\Forms\Components\RichEditor::make('content')
                     ->label('Content')
                     ->nullable()
@@ -76,14 +82,9 @@ class PostResource extends Resource
                     ->default(0)
                     ->disabled()
                     ->dehydrated(false),
-                \Filament\Forms\Components\Select::make('status')
-                    ->label('Status')
-                    ->required()
-                    ->options([
-                        'draft'   => 'Draft',
-                        'publish' => 'Publish',
-                    ])
-                    ->default('draft'),
+                Forms\Components\Toggle::make('is_active')
+                    ->label('Active')
+                    ->default(true),
             ]);
     }
 
@@ -97,21 +98,17 @@ class PostResource extends Resource
                     ->sortable()
                     ->searchable()
                     ->limit(50),
-                \Filament\Tables\Columns\TextColumn::make('category.name')
+                Tables\Columns\TextColumn::make('category.name')
                     ->label('Category')
                     ->sortable()
                     ->searchable(),
+                Tables\Columns\IconColumn::make('is_active')
+                    ->label('Active')
+                    ->boolean(),
                 Tables\Columns\TextColumn::make('view_total')
                     ->label('Views')
                     ->sortable()
                     ->badge(),
-                Tables\Columns\TextColumn::make('status')
-                    ->label('Status')
-                    ->badge()
-                    ->color(fn(string $state): string => match ($state) {
-                        'draft'   => 'gray',
-                        'publish' => 'primary',
-                    }),
                 \Filament\Tables\Columns\TextColumn::make('created_at')
                     ->label('Created At')
                     ->sortable()
@@ -133,12 +130,8 @@ class PostResource extends Resource
                 Tables\Filters\SelectFilter::make('category_id')
                     ->label('Category')
                     ->relationship('category', 'name'),
-                Tables\Filters\SelectFilter::make('status')
-                    ->label('Status')
-                    ->options([
-                        'draft' => 'Draft',
-                        'publish' => 'Publish',
-                    ]),
+                Tables\Filters\TernaryFilter::make('is_active')
+                    ->label('Active?'),
             ])
             ->actions([
                 Tables\Actions\EditAction::make(),
@@ -160,9 +153,9 @@ class PostResource extends Resource
     public static function getPages(): array
     {
         return [
-            'index'  => Pages\ListPosts::route('/'),
-            'create' => Pages\CreatePost::route('/create'),
-            'edit'   => Pages\EditPost::route('/{record}/edit'),
+            'index'  => Pages\ListServices::route('/'),
+            'create' => Pages\CreateService::route('/create'),
+            'edit'   => Pages\EditService::route('/{record}/edit'),
         ];
     }
 }

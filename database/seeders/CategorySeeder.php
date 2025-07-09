@@ -13,7 +13,6 @@ class CategorySeeder extends Seeder
     public function run(): void
     {
         $data = [
-            ['name' => 'Technology'],
             ['name' => 'Artificial Intelligence'],
             ['name' => 'Web Development'],
             ['name' => 'Cybersecurity'],

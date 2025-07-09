@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Models\Post;
 use App\Models\Message;
+use App\Models\Service;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Facades\RateLimiter;
 
@@ -13,8 +14,9 @@ class HomeController extends Controller
     public function index()
     {
         $posts = Post::where('status', 'publish')->orderBy('created_at', 'desc')->take(3)->get();
+        $services = Service::where('is_active', true)->orderBy('created_at', 'desc')->get();
 
-        return view('index', compact('posts'));
+        return view('index', compact('posts', 'services'));
     }
 
     public function loadMorePost(Request $request)

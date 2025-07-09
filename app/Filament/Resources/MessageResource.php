@@ -17,7 +17,7 @@ class MessageResource extends Resource
 {
     protected static ?string $model = Message::class;
     protected static ?string $navigationIcon = 'heroicon-o-chat-bubble-left-ellipsis';
-    protected static ?int $navigationSort      = 41;
+    protected static ?int $navigationSort      = 51;
 
     public static function form(Form $form): Form
     {

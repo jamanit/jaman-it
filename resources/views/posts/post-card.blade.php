@@ -1,5 +1,5 @@
 @php
-    $badgeColors = [
+    $postBadgeColors = [
         ['bg-blue-600', 'group-hover:text-blue-400'],
         ['bg-pink-600', 'group-hover:text-pink-400'],
         ['bg-yellow-500', 'group-hover:text-yellow-400'],
@@ -13,14 +13,14 @@
         ['bg-indigo-600', 'group-hover:text-indigo-400'],
         ['bg-fuchsia-600', 'group-hover:text-fuchsia-400'],
     ];
-    shuffle($badgeColors);
+    shuffle($postBadgeColors);
 @endphp
 
 @foreach ($posts as $index => $post)
-    @php $color = $badgeColors[$index % count($badgeColors)]; @endphp
-    <a href="javascript:void(0)" @click='open = true; post = {
+    @php $color = $postBadgeColors[$index % count($postBadgeColors)]; @endphp
+    <a href="javascript:void(0)" @click='postModal = true; post = {
        title: @json($post->title),
-       content: @json($post->content_body),
+       content: @json($post->content),
        image: @json($post->image && Storage::disk('public')->exists($post->image) ? Storage::url($post->image) : 'https://dummyimage.com/300'),
        date: @json(\Carbon\Carbon::parse($post->created_at)->translatedFormat('l, d F Y'))
    }' class="group block bg-slate-800 rounded-lg overflow-hidden shadow-lg transition hover:scale-[1.02] duration-300 cursor-pointer">
@@ -38,7 +38,7 @@
             <p class="text-sm text-gray-500 mb-2">
                 {{ \Carbon\Carbon::parse($post->created_at)->translatedFormat('l, d F Y') }}
             </p>
-            <div class="text-gray-400 text-sm line-clamp-2">{!! $post->content_body !!}</div>
+            <div class="text-gray-400 text-sm line-clamp-2">{!! $post->content !!}</div>
         </div>
     </a>
 @endforeach
