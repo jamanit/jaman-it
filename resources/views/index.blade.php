@@ -77,7 +77,7 @@
             @if ($settingItems['logo']->value && Storage::disk('public')->exists($settingItems['logo']->value))
                 <img src="{{ Storage::url($settingItems['logo']->value) }}" alt="Logo" class="mx-auto h-20 mb-6 rounded-xl shadow-lg" />
             @else
-                <img src="{{ asset('/') }}assets/images/logo.png" alt="Logo" class="mx-auto h-20 mb-6 rounded-xl shadow-lg" />
+                <img src="{{ asset('/') }}assets/images/logo.jpg" alt="Logo" class="mx-auto h-20 mb-6 rounded-xl shadow-lg" />
             @endif
 
             <h1 class="text-5xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-blue-400 to-pink-500 mb-4">About {{ $settingItems['site_name']->value ?? '' }}</h1>

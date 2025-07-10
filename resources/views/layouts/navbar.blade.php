@@ -7,7 +7,7 @@
                     @if ($settingItems['logo']->value && Storage::disk('public')->exists($settingItems['logo']->value))
                         <img src="{{ Storage::url($settingItems['logo']->value) }}" alt="Logo" class="h-10 rounded" />
                     @else
-                        <img src="{{ asset('/') }}assets/images/logo.png" alt="Logo" class="h-10 rounded" />
+                        <img src="{{ asset('/') }}assets/images/logo.jpg" alt="Logo" class="h-10 rounded" />
                     @endif
                 </a>
 
