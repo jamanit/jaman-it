@@ -19,7 +19,7 @@
                 @php $color = $serviceBadgeColors[$index % count($serviceBadgeColors)]; @endphp
                 <a href="{{ url($service->slug) }}" class="block p-4 rounded-lg shadow-md hover:shadow-lg transition text-white {{ $color[0] }}">
                     <h3 class="text-lg font-semibold mb-2">{{ $service->title }}</h3>
-                    <p class="text-sm text-white/80">{{ Str::limit(strip_tags($service->description), 80) }}</p>
+                    <p class="text-sm text-white/80">{{ \Illuminate\Support\Str::limit(strip_tags($service->description), 80) }}</p>
                 </a>
             @endforeach
         </div>
