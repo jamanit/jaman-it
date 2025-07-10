@@ -17,6 +17,11 @@ class ServiceSeeder extends Seeder
 
         $services = [
             [
+                'title'       => 'Image to PDF',
+                'description' => 'Ubah gambar menjadi dokumen PDF dengan cepat dan mudah.',
+                'content'     => '<p>Unggah satu atau beberapa gambar dan konversikan menjadi satu file PDF. Mendukung format JPG, PNG, BMP, dan lainnya.</p>',
+            ],
+            [
                 'title'       => 'Chat AI',
                 'description' => 'Layanan percakapan cerdas berbasis AI untuk menjawab pertanyaan Anda secara instan.',
                 'content'     => '<p>Gunakan Chat AI untuk mendapatkan jawaban cepat dan akurat dari berbagai topik, termasuk teknologi, pendidikan, dan banyak lagi.</p>',

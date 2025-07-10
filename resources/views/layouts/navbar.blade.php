@@ -33,7 +33,7 @@
                         <ul x-show="open" x-transition class="absolute z-20 left-0 mt-2 w-40 bg-slate-800 text-white rounded-lg shadow-lg transition duration-300 overflow-hidden">
                             @foreach ($services->take(5) as $service)
                                 <li>
-                                    <a href="{{ url($service->slug) }}" target="_blank" @click="active = 'Services'; activeSub = '{{ $service->title }}'" :class="activeSub === '{{ $service->title }}' ? 'bg-pink-500' : ''" class="block px-4 py-2 hover:bg-pink-500 transition duration-200">
+                                    <a href="{{ url($service->slug) }}" @click="active = 'Services'; activeSub = '{{ $service->title }}'" :class="activeSub === '{{ $service->title }}' ? 'bg-pink-500' : ''" class="block px-4 py-2 hover:bg-pink-500 transition duration-200">
                                         {{ $service->title }}
                                     </a>
                                 </li>
@@ -124,7 +124,7 @@
                 <ul x-show="activeDropdown === 'Services'" x-transition class="mt-1 space-y-1 bg-white text-black rounded-lg shadow-lg p-4">
                     @foreach ($services->take(5) as $service)
                         <li>
-                            <a href="{{ url($service->slug) }}" target="_blank" @click="activeDropdownLink = '{{ $service->title }}'; sidebarOpen = false" class="group relative inline-block py-1 text-sm font-medium text-black transition duration-300 hover:text-violet-700">
+                            <a href="{{ url($service->slug) }}" @click="activeDropdownLink = '{{ $service->title }}'; sidebarOpen = false" class="group relative inline-block py-1 text-sm font-medium text-black transition duration-300 hover:text-violet-700">
                                 {{ $service->title }}
                                 <span class="absolute left-0 bottom-0 h-[2px] bg-violet-500 transition-all duration-300 ease-in-out" :class="activeDropdownLink === '{{ $service->title }}' ? 'w-full' : 'w-0 group-hover:w-full'"></span>
                             </a>

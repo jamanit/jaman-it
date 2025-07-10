@@ -31,7 +31,7 @@
             <div class="flex flex-wrap justify-center gap-4">
                 @foreach ($services->take(5) as $index => $service)
                     @php $color = $serviceBadgeColors[$index % count($serviceBadgeColors)]; @endphp
-                    <a href="{{ url($service->slug) }}" target="_blank" class="px-5 py-3 {{ $color[0] }} text-white rounded-full transition shadow-lg animate-bounce">{{ $service->title }}</a>
+                    <a href="{{ url($service->slug) }}" class="px-5 py-3 {{ $color[0] }} text-white rounded-full transition shadow-lg animate-bounce">{{ $service->title }}</a>
                 @endforeach
             </div>
 

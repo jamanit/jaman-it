@@ -1,20 +1,21 @@
 <?php
 
-use App\Http\Controllers\HomeController;
 use Illuminate\Support\Facades\Route;
-use App\Http\Controllers\SocialiteController;
 
 // Route::get('/', function () {
 //     return view('welcome');
 // });
 
+Route::get('/', [App\Http\Controllers\HomeController::class, 'index'])->name('home.index');
 
-Route::get('/', [HomeController::class, 'index'])->name('home.index');
-Route::post('/loadMorePost', [HomeController::class, 'loadMorePost'])->name('home.loadMorePost');
-Route::post('/send-message', [HomeController::class, 'sendMessage'])->name('home.sendMessage');
+Route::get('/auth/{provider}/redirect', [App\Http\Controllers\SocialiteController::class, 'redirect'])->name('socialite.redirect');
+Route::get('/auth/{provider}/callback', [App\Http\Controllers\SocialiteController::class, 'callback'])->name('socialite.callback');
+Route::get('/auth/create-password', [App\Http\Controllers\SocialiteController::class, 'create_password'])->name('create-password');
+Route::post('/auth/create-password/update', [App\Http\Controllers\SocialiteController::class, 'create_password_update'])->name('create-password.update');
+Route::get('/auth/create-password/skip', [App\Http\Controllers\SocialiteController::class, 'create_password_skip'])->name('create-password.skip');
 
-Route::get('/auth/{provider}/redirect', [SocialiteController::class, 'redirect'])->name('socialite.redirect');
-Route::get('/auth/{provider}/callback', [SocialiteController::class, 'callback'])->name('socialite.callback');
-Route::get('/auth/create-password', [SocialiteController::class, 'create_password'])->name('create-password');
-Route::post('/auth/create-password/update', [SocialiteController::class, 'create_password_update'])->name('create-password.update');
-Route::get('/auth/create-password/skip', [SocialiteController::class, 'create_password_skip'])->name('create-password.skip');
+Route::post('/loadMorePost', [App\Http\Controllers\HomeController::class, 'loadMorePost'])->name('home.loadMorePost');
+Route::post('/send-message', [App\Http\Controllers\HomeController::class, 'sendMessage'])->name('home.sendMessage');
+
+Route::get('/image-to-pdf', [App\Http\Controllers\ImageToPdfConverterController::class, 'index'])->name('image-to-pdf.index');
+Route::post('/image-to-pdf', [App\Http\Controllers\ImageToPdfConverterController::class, 'convert'])->name('image-to-pdf.convert');

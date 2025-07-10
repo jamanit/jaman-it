@@ -23,5 +23,12 @@ class AppServiceProvider extends ServiceProvider
         if (!app()->environment('local')) {
             URL::forceScheme('https');
         }
+
+        \Illuminate\Support\Facades\View::composer('*', function ($view) {
+            $services = \App\Models\Service::where('is_active', true)
+                ->orderBy('created_at', 'desc')
+                ->get();
+            $view->with('services', $services);
+        });
     }
 }

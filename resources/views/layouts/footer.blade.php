@@ -5,8 +5,8 @@
                <p class="mb-4 text-center md:mb-0 md:text-left">&copy; 2025 Jaman IT. All rights reserved.</p>
 
                <div class="space-x-4 text-sm">
-                   <a href="#" class="hover:underline">Privacy Policy</a>
-                   <a href="#" class="hover:underline">Terms of Service</a>
+                   <a href="javascript:void(0)" class="hover:underline">Privacy Policy</a>
+                   <a href="javascript:void(0)" class="hover:underline">Terms of Service</a>
                </div>
            </div>
        </div>

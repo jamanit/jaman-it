@@ -14,9 +14,8 @@ class HomeController extends Controller
     public function index()
     {
         $posts = Post::where('status', 'publish')->orderBy('created_at', 'desc')->take(3)->get();
-        $services = Service::where('is_active', true)->orderBy('created_at', 'desc')->get();
 
-        return view('index', compact('posts', 'services'));
+        return view('index', compact('posts'));
     }
 
     public function loadMorePost(Request $request)
