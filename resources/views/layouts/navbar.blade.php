@@ -31,7 +31,7 @@
                             </svg>
                         </button>
                         <ul x-show="open" x-transition class="absolute z-20 left-0 mt-2 w-40 bg-slate-800 text-white rounded-lg shadow-lg transition duration-300 overflow-hidden">
-                            @foreach ($services->take(5) as $service)
+                            @foreach ($services->where('is_popular', true) as $service)
                                 <li>
                                     <a href="{{ url($service->slug) }}" @click="active = 'Services'; activeSub = '{{ $service->title }}'" :class="activeSub === '{{ $service->title }}' ? 'bg-pink-500' : ''" class="block px-4 py-2 hover:bg-pink-500 transition duration-200">
                                         {{ $service->title }}
@@ -122,7 +122,7 @@
                     </svg>
                 </button>
                 <ul x-show="activeDropdown === 'Services'" x-transition class="mt-1 space-y-1 bg-white text-black rounded-lg shadow-lg p-4">
-                    @foreach ($services->take(5) as $service)
+                    @foreach ($services->where('is_popular', true) as $service)
                         <li>
                             <a href="{{ url($service->slug) }}" @click="activeDropdownLink = '{{ $service->title }}'; sidebarOpen = false" class="group relative inline-block py-1 text-sm font-medium text-black transition duration-300 hover:text-violet-700">
                                 {{ $service->title }}

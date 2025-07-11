@@ -82,6 +82,9 @@ class ServiceResource extends Resource
                     ->default(0)
                     ->disabled()
                     ->dehydrated(false),
+                Forms\Components\Toggle::make('is_popular')
+                    ->label('Popular')
+                    ->default(false),
                 Forms\Components\Toggle::make('is_active')
                     ->label('Active')
                     ->default(true),
@@ -91,7 +94,8 @@ class ServiceResource extends Resource
     public static function table(Table $table): Table
     {
         return $table
-            ->defaultSort('created_at', 'desc')
+            ->reorderable('order')
+            ->defaultSort('order')
             ->columns([
                 \Filament\Tables\Columns\TextColumn::make('title')
                     ->label('Title')
@@ -102,13 +106,16 @@ class ServiceResource extends Resource
                     ->label('Category')
                     ->sortable()
                     ->searchable(),
-                Tables\Columns\IconColumn::make('is_active')
-                    ->label('Active')
-                    ->boolean(),
                 Tables\Columns\TextColumn::make('view_total')
                     ->label('Views')
                     ->sortable()
                     ->badge(),
+                Tables\Columns\IconColumn::make('is_popular')
+                    ->label('Popular')
+                    ->boolean(),
+                Tables\Columns\IconColumn::make('is_active')
+                    ->label('Active')
+                    ->boolean(),
                 \Filament\Tables\Columns\TextColumn::make('created_at')
                     ->label('Created At')
                     ->sortable()

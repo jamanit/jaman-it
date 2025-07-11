@@ -26,7 +26,7 @@ class AppServiceProvider extends ServiceProvider
 
         \Illuminate\Support\Facades\View::composer('*', function ($view) {
             $services = \App\Models\Service::where('is_active', true)
-                ->orderBy('created_at', 'desc')
+                ->orderBy('order', 'asc')
                 ->get();
             $view->with('services', $services);
         });

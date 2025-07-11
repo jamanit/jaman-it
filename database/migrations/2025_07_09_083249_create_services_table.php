@@ -21,6 +21,8 @@ return new class extends Migration
             $table->text('description')->nullable();
             $table->text('content')->nullable();
             $table->integer('view_total')->default(0);
+            $table->integer('order')->default(0);
+            $table->boolean('is_popular')->default(false);
             $table->boolean('is_active')->default(true);
             $table->timestamps();
         });
