@@ -35,9 +35,9 @@ class ServiceSeeder extends Seeder
                 'is_popular'  => true,
             ],
             [
-                'title'       => 'JPG to PDF',
-                'description' => 'Gabungkan gambar JPG menjadi satu dokumen PDF.',
-                'content'     => '<p>Unggah satu atau beberapa gambar JPG, atur urutannya, lalu unduh hasilnya dalam format PDF yang rapi.</p>',
+                'title'       => 'Tiktok Saver',
+                'description' => 'Unduh video TikTok tanpa watermark secara cepat dan gratis.',
+                'content'     => '<p>Tempelkan tautan video TikTok, lalu unduh videonya dalam kualitas terbaik tanpa watermark. Proses cepat dan tanpa aplikasi tambahan.</p>',
                 'is_popular'  => true,
             ],
             [
