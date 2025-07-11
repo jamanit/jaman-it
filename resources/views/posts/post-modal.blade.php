@@ -14,6 +14,11 @@
              <template x-if="post.image">
                  <img :src="post.image" alt="Image" class="w-full h-78 object-cover rounded-lg shadow-md">
              </template>
+             <template x-if="post.category">
+                 <span class="inline-block text-white text-xs px-2 py-1 rounded-full" :class="post.categoryColor">
+                     <span x-text="post.category"></span>
+                 </span>
+             </template>
              <p class="text-sm text-slate-400" x-text="post.date"></p>
              <div class="text-slate-100 text-base leading-relaxed" x-html="post.content"></div>
          </div>

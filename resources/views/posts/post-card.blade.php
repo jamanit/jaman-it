@@ -22,8 +22,11 @@
        title: @json($post->title),
        content: @json($post->content),
        image: @json($post->image && Storage::disk('public')->exists($post->image) ? Storage::url($post->image) : 'https://dummyimage.com/300'),
-       date: @json(\Carbon\Carbon::parse($post->created_at)->translatedFormat('l, d F Y'))
-   }' class="group block bg-slate-800 rounded-lg overflow-hidden shadow-lg transition hover:scale-[1.02] duration-300 cursor-pointer">
+       date: @json(\Carbon\Carbon::parse($post->created_at)->translatedFormat('l, d F Y')),
+       category: @json($post->category ? $post->category->name : null),
+       categoryColor: @json($color[0])
+   }'
+        class="group block bg-slate-800 rounded-lg overflow-hidden shadow-lg transition hover:scale-[1.02] duration-300 cursor-pointer">
 
         @if ($post->image && Storage::disk('public')->exists($post->image))
             <img src="{{ Storage::url($post->image) }}" alt="{{ $post->title }}" class="w-full h-56 object-cover" />
