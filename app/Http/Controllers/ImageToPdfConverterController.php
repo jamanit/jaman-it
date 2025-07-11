@@ -18,10 +18,12 @@ class ImageToPdfConverterController extends Controller
     {
         try {
             $request->validate([
-                'images'      => 'required|array',
-                'images.*'    => 'mimes:jpg,jpeg,png,gif,bmp,webp|max:2048',
-                'orientation' => 'required|in:portrait,landscape',
-                'use_margin'  => 'required|in:yes,no',
+                'images'              => 'required|array',
+                'images.*'            => 'mimes:jpg,jpeg,png,gif,bmp,webp|max:2048',
+                'orientation'         => 'required|in:portrait,landscape',
+                'use_margin'          => 'required|in:yes,no',
+                'vertical_position'   => 'required|in:top,center,bottom',
+                'horizontal_position' => 'required|in:left,center,right',
             ]);
 
             $imageSrcList = [];
@@ -43,7 +45,9 @@ class ImageToPdfConverterController extends Controller
             $pdf = Pdf::loadView('services.image-to-pdf.preview', [
                 'images'      => $imageSrcList,
                 'orientation' => $request->orientation,
-                'useMargin'   => $request->use_margin === 'yes'
+                'useMargin'   => $request->use_margin === 'yes',
+                'vAlign'      => $request->vertical_position,
+                'hAlign'      => $request->horizontal_position,
             ])->setPaper('a4', $request->orientation);
 
             // Create a file name from the name of the first image

@@ -58,6 +58,32 @@
                     </div>
                 </div>
 
+                <div class="grid grid-cols-1 sm:grid-cols-2 gap-6">
+                    <div>
+                        <label class="block text-sm font-medium mb-2">Vertical Position</label>
+                        <div class="flex flex-wrap gap-4">
+                            @foreach (['top', 'center', 'bottom'] as $vPos)
+                                <label class="flex items-center space-x-2 cursor-pointer">
+                                    <input type="radio" name="vertical_position" value="{{ $vPos }}" {{ $vPos === 'center' ? 'checked' : '' }} class="text-pink-500 focus:ring-pink-500 cursor-pointer">
+                                    <span class="capitalize">{{ $vPos }}</span>
+                                </label>
+                            @endforeach
+                        </div>
+                    </div>
+
+                    <div>
+                        <label class="block text-sm font-medium mb-2">Horizontal Position</label>
+                        <div class="flex flex-wrap gap-4">
+                            @foreach (['left', 'center', 'right'] as $hPos)
+                                <label class="flex items-center space-x-2 cursor-pointer">
+                                    <input type="radio" name="horizontal_position" value="{{ $hPos }}" {{ $hPos === 'center' ? 'checked' : '' }} class="text-pink-500 focus:ring-pink-500 cursor-pointer">
+                                    <span class="capitalize">{{ $hPos }}</span>
+                                </label>
+                            @endforeach
+                        </div>
+                    </div>
+                </div>
+
                 <div class="text-center">
                     <button type="submit" x-bind:disabled="isSubmitting" class="cursor-pointer px-6 py-3 bg-gradient-to-r from-blue-500 to-pink-500 text-white font-semibold rounded-lg shadow-lg hover:scale-105 transition duration-300 disabled:opacity-50 disabled:cursor-not-allowed">
                         <span x-show="!isSubmitting">Convert to PDF</span>
