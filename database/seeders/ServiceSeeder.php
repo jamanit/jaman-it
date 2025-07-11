@@ -23,6 +23,12 @@ class ServiceSeeder extends Seeder
                 'is_popular'  => true,
             ],
             [
+                'title'       => 'TikTok Saver',
+                'description' => 'Unduh video TikTok tanpa watermark secara cepat dan gratis.',
+                'content'     => '<p>Tempelkan tautan video TikTok, lalu unduh videonya dalam kualitas terbaik tanpa watermark. Proses cepat dan tanpa aplikasi tambahan.</p>',
+                'is_popular'  => true,
+            ],
+            [
                 'title'       => 'Chat AI',
                 'description' => 'Layanan percakapan cerdas berbasis AI untuk menjawab pertanyaan Anda secara instan.',
                 'content'     => '<p>Gunakan Chat AI untuk mendapatkan jawaban cepat dan akurat dari berbagai topik, termasuk teknologi, pendidikan, dan banyak lagi.</p>',
@@ -32,12 +38,6 @@ class ServiceSeeder extends Seeder
                 'title'       => 'Word to PDF',
                 'description' => 'Konversi dokumen Word (.docx) ke format PDF dengan mudah dan cepat.',
                 'content'     => '<p>Cukup unggah file Word Anda dan dapatkan file PDF berkualitas tinggi dalam hitungan detik. Tidak diperlukan instalasi software.</p>',
-                'is_popular'  => true,
-            ],
-            [
-                'title'       => 'TikTok Saver',
-                'description' => 'Unduh video TikTok tanpa watermark secara cepat dan gratis.',
-                'content'     => '<p>Tempelkan tautan video TikTok, lalu unduh videonya dalam kualitas terbaik tanpa watermark. Proses cepat dan tanpa aplikasi tambahan.</p>',
                 'is_popular'  => true,
             ],
             [

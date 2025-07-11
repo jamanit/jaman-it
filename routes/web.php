@@ -19,3 +19,6 @@ Route::post('/send-message', [App\Http\Controllers\HomeController::class, 'sendM
 
 Route::get('/image-to-pdf', [App\Http\Controllers\ImageToPdfConverterController::class, 'index'])->name('image-to-pdf.index');
 Route::post('/image-to-pdf', [App\Http\Controllers\ImageToPdfConverterController::class, 'convert'])->name('image-to-pdf.convert');
+
+Route::get('/tiktok-saver', [App\Http\Controllers\TikTokSaverController::class, 'index'])->name('tiktok-saver.index');
+Route::post('/tiktok-saver', [App\Http\Controllers\TikTokSaverController::class, 'download'])->name('tiktok-saver.download');
