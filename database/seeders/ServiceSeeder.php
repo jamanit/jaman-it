@@ -35,7 +35,7 @@ class ServiceSeeder extends Seeder
                 'is_popular'  => true,
             ],
             [
-                'title'       => 'Tiktok Saver',
+                'title'       => 'TikTok Saver',
                 'description' => 'Unduh video TikTok tanpa watermark secara cepat dan gratis.',
                 'content'     => '<p>Tempelkan tautan video TikTok, lalu unduh videonya dalam kualitas terbaik tanpa watermark. Proses cepat dan tanpa aplikasi tambahan.</p>',
                 'is_popular'  => true,
