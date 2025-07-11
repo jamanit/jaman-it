@@ -58,7 +58,8 @@ class ServiceResource extends Resource
                 Forms\Components\TextInput::make('slug')
                     ->label('Slug')
                     ->required()
-                    ->unique(Service::class, 'slug', ignoreRecord: true),
+                    ->unique(Service::class, 'slug', ignoreRecord: true)
+                    ->disabled(fn(?Service $record) => $record !== null),
                 Forms\Components\Textarea::make('description')
                     ->label('Description')
                     ->rows(4)

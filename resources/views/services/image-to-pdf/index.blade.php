@@ -27,7 +27,7 @@
 
                 <div>
                     <label class="block text-sm font-medium mb-2">Select images</label>
-                    <input type="file" name="images[]" multiple class="w-full bg-slate-700 border border-slate-600 text-white rounded-lg px-4 py-2 focus:outline-none focus:ring-2 focus:ring-pink-500 cursor-pointer">
+                    <input type="file" name="images[]" multiple accept="image/*" class="w-full bg-slate-700 border border-slate-600 text-white rounded-lg px-4 py-2 focus:outline-none focus:ring-2 focus:ring-pink-500 cursor-pointer">
                 </div>
 
                 <div>

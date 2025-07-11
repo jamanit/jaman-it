@@ -7,7 +7,49 @@
     <section id="home" class="py-32 min-h-screen bg-cover bg-center relative" style="background-image: url('{{ asset('assets/images/space-bg.jpg') }}')">
         <div class="absolute inset-0 bg-black/50"></div>
         <div class="relative z-10 px-4 sm:px-6 lg:px-12 xl:px-20 text-center">
-            <h1 class="text-5xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-blue-400 to-pink-500 mb-4">Explore Our Free Online Services</h1>
+            <h1 class="animated-gradient-text text-5xl font-bold text-transparent bg-clip-text mb-4">
+                Explore Our Free Online Services
+            </h1>
+
+            <style>
+                @keyframes gradientMove {
+                    0% {
+                        background-position: 0% 50%;
+                    }
+
+                    50% {
+                        background-position: 100% 50%;
+                    }
+
+                    100% {
+                        background-position: 0% 50%;
+                    }
+                }
+
+                .animated-gradient-text {
+                    background-image: linear-gradient(270deg,
+                            #0ea5e9,
+                            /* sky-500 */
+                            #ec4899,
+                            /* pink-500 */
+                            #f43f5e,
+                            /* rose-500 */
+                            #22d3ee,
+                            /* cyan-400 */
+                            #f59e0b,
+                            /* amber-500 */
+                            #8b5cf6,
+                            /* violet-500 */
+                            #0ea5e9
+                            /* sky-500 */
+                        );
+                    background-size: 600% 600%;
+                    animation: gradientMove 6s ease-in-out infinite;
+                    -webkit-background-clip: text;
+                    -webkit-text-fill-color: transparent;
+                }
+            </style>
+
             <p class="text-lg text-gray-300 mb-8">Discover various smart and handy services, all free and instantly accessible.</p>
 
             @php

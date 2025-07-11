@@ -44,7 +44,7 @@
     @endif
 </head>
 
-<body class="font-inter min-h-screen flex flex-col bg-slate-950 text-white" x-data="{ postModal: false, post: {}, serviceModal: false }">
+<body class="font-inter min-h-screen flex flex-col bg-slate-950 text-white" x-data="{ showScroll: false, postModal: false, post: {}, serviceModal: false }" x-init="window.addEventListener('scroll', () => { showScroll = window.pageYOffset > 100; })">
     @include('layouts.navbar')
 
     <main class="flex-grow">
@@ -52,6 +52,8 @@
     </main>
 
     @include('layouts.footer')
+
+    @include('layouts.scroll-to-top')
 
     @stack('scripts')
 </body>

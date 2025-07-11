@@ -6,11 +6,23 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
 use Barryvdh\DomPDF\Facade\Pdf;
 use Illuminate\Support\Str;
+use App\Models\Service;
+use Illuminate\Support\Facades\Cookie;
 
 class ImageToPdfConverterController extends Controller
 {
-    public function index()
+    public function index(Request $request)
     {
+        $service = Service::where('slug', 'image-to-pdf')->first();
+
+        if ($service) {
+            $cookieName = 'viewed_service_' . $service->id;
+            if (!$request->cookie($cookieName)) {
+                $service->increment('view_total');
+                Cookie::queue($cookieName, true, 10);
+            }
+        }
+
         return view('services.image-to-pdf.index');
     }
 
@@ -19,7 +31,7 @@ class ImageToPdfConverterController extends Controller
         try {
             $request->validate([
                 'images'              => 'required|array',
-                'images.*'            => 'mimes:jpg,jpeg,png,gif,bmp,webp|max:2048',
+                'images.*'            => 'mimes:jpg,jpeg,png,gif,bmp,webp|max:5120',
                 'orientation'         => 'required|in:portrait,landscape',
                 'use_margin'          => 'required|in:yes,no',
                 'vertical_position'   => 'required|in:top,center,bottom',
