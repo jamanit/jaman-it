@@ -7,7 +7,7 @@
     <section id="home" class="py-32 min-h-screen bg-cover bg-center relative" style="background-image: url('{{ asset('assets/images/space-bg.jpg') }}')">
         <div class="absolute inset-0 bg-black/50"></div>
         <div class="relative z-10 px-4 sm:px-6 lg:px-12 xl:px-20 text-center">
-            <h1 class="text-5xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-blue-400 to-pink-500 mb-4">Explore Our Free Online Tools</h1>
+            <h1 class="text-5xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-blue-400 to-pink-500 mb-4">Explore Our Free Online Services</h1>
             <p class="text-lg text-gray-300 mb-8">Discover various smart and handy services, all free and instantly accessible.</p>
 
             @php
