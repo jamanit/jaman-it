@@ -24,4 +24,5 @@ Route::get('/tiktok-saver', [App\Http\Controllers\TikTokSaverController::class, 
 Route::post('/tiktok-saver', [App\Http\Controllers\TikTokSaverController::class, 'download'])->name('tiktok-saver.download');
 
 Route::get('/chat-ai', [App\Http\Controllers\ChatAIController::class, 'index'])->name('chat-ai.index');
-Route::post('/chat-ai', [App\Http\Controllers\ChatAIController::class, 'chat'])->name('chat-ai.chat');
+Route::post('/chat-ai/chat', [App\Http\Controllers\ChatAIController::class, 'chat'])->name('chat-ai.chat');
+Route::delete('/chat-ai/clear-history', [App\Http\Controllers\ChatAIController::class, 'clearHistory'])->name('chat-ai.clearHistory');

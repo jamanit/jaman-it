@@ -3,7 +3,7 @@
 @push('title', 'Image to PDF')
 
 @section('content')
-    <section class="py-24 min-h-screen text-white">
+    <section class="py-24 min-h-screen">
         <div class="px-4 sm:px-6 lg:px-12 xl:px-20 max-w-3xl mx-auto">
             <h2 class="text-3xl font-bold text-center mb-10 text-transparent bg-clip-text bg-gradient-to-r from-blue-400 to-pink-500">Convert Image to PDF</h2>
 
