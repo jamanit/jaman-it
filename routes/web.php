@@ -22,3 +22,6 @@ Route::post('/image-to-pdf', [App\Http\Controllers\ImageToPdfConverterController
 
 Route::get('/tiktok-saver', [App\Http\Controllers\TikTokSaverController::class, 'index'])->name('tiktok-saver.index');
 Route::post('/tiktok-saver', [App\Http\Controllers\TikTokSaverController::class, 'download'])->name('tiktok-saver.download');
+
+Route::get('/chat-ai', [App\Http\Controllers\ChatAIController::class, 'index'])->name('chat-ai.index');
+Route::post('/chat-ai', [App\Http\Controllers\ChatAIController::class, 'chat'])->name('chat-ai.chat');
