@@ -16,7 +16,7 @@
             <form id="chatForm" class="bg-slate-800 p-6 rounded-xl shadow-lg space-y-6">
                 <div>
                     <label class="block text-sm font-medium mb-2">Your Question</label>
-                    <textarea id="text" name="text" rows="4" placeholder="e.g., What is Laravel?" required class="w-full bg-slate-700 border border-slate-600 text-white rounded-lg px-4 py-2 focus:outline-none focus:ring-2 focus:ring-pink-500"></textarea>
+                    <textarea id="text" name="text" rows="4" placeholder="Ask me anything..." class="w-full bg-slate-700 border border-slate-600 text-white rounded-lg px-4 py-2 focus:outline-none focus:ring-2 focus:ring-pink-500"></textarea>
                 </div>
 
                 <div class="text-center">
@@ -27,6 +27,15 @@
             </form>
 
             <div id="result" class="mt-8 bg-slate-700 p-4 rounded-xl shadow text-white hidden leading-relaxed whitespace-pre-line"></div>
+
+            @if (session('reply'))
+                <div class="mt-8 bg-slate-700 p-4 rounded-xl shadow text-white leading-relaxed">
+                    <strong class="text-pink-400 block mb-2">AI:</strong>
+                    <div class="prose prose-invert prose-sm max-w-none">
+                        {!! \Illuminate\Support\Str::markdown(session('reply')) !!}
+                    </div>
+                </div>
+            @endif
         </div>
     </section>
 @endsection
@@ -45,7 +54,12 @@
         form.addEventListener("submit", async function(e) {
             e.preventDefault();
             const text = document.getElementById("text").value;
-            if (!text.trim()) return;
+
+            if (!text) {
+                resultDiv.classList.remove("hidden");
+                resultDiv.innerHTML = "<span class='text-red-400'>Input cannot be empty!</span>";
+                return;
+            }
 
             resultDiv.classList.remove("hidden");
             resultDiv.innerHTML = "<span class='opacity-70'>Thinking...</span>";
@@ -64,7 +78,14 @@
                 });
 
                 const data = await response.json();
-                if (!response.ok) throw new Error(data.message || "Something went wrong");
+                if (!response.ok) {
+                    if (response.status === 422 && data.errors && data.errors.text) {
+                        resultDiv.innerHTML = `<span class="text-red-400">${data.errors.text[0]}</span>`;
+                    } else {
+                        resultDiv.innerHTML = `<span class="text-red-400">Error: ${data.message || "Something went wrong"}</span>`;
+                    }
+                    throw new Error();
+                }
 
                 resultDiv.innerHTML = `
                     <strong class="text-pink-400 block mb-2">AI:</strong>

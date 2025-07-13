@@ -27,6 +27,10 @@ class ChatAIController extends Controller
 
     public function chat(Request $request)
     {
+        $request->validate([
+            'text' => 'required|string|min:3',
+        ]);
+
         $text = $request->input('text');
         $reply = 'Sorry, unable to reply.';
 
