@@ -130,6 +130,15 @@
     </script>
 
     <script>
+        document.addEventListener("DOMContentLoaded", function() {
+            const chatMessages = document.getElementById("chatMessages");
+            if (chatMessages) {
+                chatMessages.scrollTop = chatMessages.scrollHeight;
+            }
+        });
+    </script>
+
+    <script>
         const clearForm = document.getElementById('clearHistoryForm');
         if (clearForm) {
             clearForm.addEventListener('submit', async function(e) {
