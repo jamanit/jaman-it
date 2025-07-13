@@ -29,7 +29,12 @@
             <div id="result" class="mt-8 bg-slate-700 p-4 rounded-xl shadow text-white hidden leading-relaxed whitespace-pre-line"></div>
         </div>
     </section>
+@endsection
 
+@push('styles')
+@endpush
+
+@push('scripts')
     <script>
         const form = document.getElementById('chatForm');
         const resultDiv = document.getElementById('result');
@@ -47,33 +52,38 @@
         function formatReply(text) {
             let escaped = escapeHtml(text);
 
-            // Handle bold **text**
+            // Bold: **text**
             escaped = escaped.replace(/\*\*(.*?)\*\*/g, "<strong>$1</strong>");
 
-            // Handle italic *text*
+            // Italic: *text*
             escaped = escaped.replace(/\*(.*?)\*/g, "<em>$1</em>");
 
-            // Handle inline code `text`
+            // Inline code: `text`
             escaped = escaped.replace(/`([^`]+?)`/g, "<code class='bg-gray-800 text-green-400 px-1 rounded'>$1</code>");
 
-        // Handle code block ```...```
+        // Code block: ```code```
         escaped = escaped.replace(/```([\s\S]*?)```/g, "<pre class='bg-gray-800 text-green-300 p-3 rounded overflow-x-auto mb-4'><code>$1</code></pre>");
 
-        // Handle unordered lists - item
+        // Ordered list: 1. item
+        escaped = escaped.replace(/(?:^|\n)(\d+)\. (.*?)(?=\n|$)/g, "<li>$2</li>");
+        if (escaped.includes("<li>")) {
+            escaped = escaped.replace(/(<li>.*?<\/li>)+/gs, (match) => `<ol class="list-decimal pl-5 space-y-1 mb-4">${match}</ol>`);
+        }
+
+        // Unordered list: - item
         escaped = escaped.replace(/(?:^|\n)- (.*?)(?=\n|$)/g, "<li>$1</li>");
         if (escaped.includes("<li>")) {
             escaped = escaped.replace(/(<li>.*?<\/li>)+/gs, (match) => `<ul class="list-disc pl-5 space-y-1 mb-4">${match}</ul>`);
         }
 
-        // Handle ordered lists 1. item
-        escaped = escaped.replace(/(?:^|\n)\d+\. (.*?)(?=\n|$)/g, "<li>$1</li>");
-        if (escaped.includes("<li>")) {
-            escaped = escaped.replace(/(<li>.*?<\/li>)+/gs, (match) => `<ol class="list-decimal pl-5 space-y-1 mb-4">${match}</ol>`);
-        }
+        // Headings: ### text
+        escaped = escaped.replace(/^### (.*)$/gm, '<strong class="block text-white mt-4 mb-1 text-base">$1</strong>');
 
-        // Handle paragraphs and line breaks
-        escaped = escaped.replace(/\n{2,}/g, "<br><br>"); // double newline → paragraph
-        escaped = escaped.replace(/\n/g, "<br>"); // single newline → line break
+        // Paragraphs: \n\n
+        escaped = escaped.replace(/\n{2,}/g, "<br><br>");
+
+        // Line breaks
+        escaped = escaped.replace(/\n/g, "<br>");
 
         return `<strong class="text-pink-400">AI:</strong><br>${escaped}`;
     }
@@ -111,4 +121,4 @@
             submitBtn.disabled = false;
         });
     </script>
-@endsection
+@endpush
