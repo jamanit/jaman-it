@@ -47,13 +47,13 @@
                         </ul>
                     </li>
                     <li>
-                        <a href="#post" @click="active = 'Post'; activeSub = ''" :class="active === 'Post' ? 'bg-pink-500' : ''" class="p-2 text-white hover:bg-pink-500 rounded-lg transition duration-300">Post</a>
+                        <a href="/#post" @click="active = 'Post'; activeSub = ''" :class="active === 'Post' ? 'bg-pink-500' : ''" class="p-2 text-white hover:bg-pink-500 rounded-lg transition duration-300">Post</a>
                     </li>
                     <li>
-                        <a href="#about" @click="active = 'About'; activeSub = ''" :class="active === 'About' ? 'bg-pink-500' : ''" class="p-2 text-white hover:bg-pink-500 rounded-lg transition duration-300">About</a>
+                        <a href="/#about" @click="active = 'About'; activeSub = ''" :class="active === 'About' ? 'bg-pink-500' : ''" class="p-2 text-white hover:bg-pink-500 rounded-lg transition duration-300">About</a>
                     </li>
                     <li>
-                        <a href="#contact" @click="active = 'Contact'; activeSub = ''" :class="active === 'Contact' ? 'bg-pink-500' : ''" class="p-2 text-white hover:bg-pink-500 rounded-lg transition duration-300">Contact</a>
+                        <a href="/#contact" @click="active = 'Contact'; activeSub = ''" :class="active === 'Contact' ? 'bg-pink-500' : ''" class="p-2 text-white hover:bg-pink-500 rounded-lg transition duration-300">Contact</a>
                     </li>
                 </ul>
             </div>
@@ -139,7 +139,7 @@
                 </ul>
             </li>
             <li>
-                <a href="#post" @click="active = 'Post'; activeDropdown = ''; activeDropdownLink = ''; sidebarOpen = false" :class="active === 'Post' ? 'bg-violet-500' : ''" class="flex items-center gap-2 px-4 py-2 rounded-lg hover:bg-violet-500 transition duration-300">
+                <a href="/#post" @click="active = 'Post'; activeDropdown = ''; activeDropdownLink = ''; sidebarOpen = false" :class="active === 'Post' ? 'bg-violet-500' : ''" class="flex items-center gap-2 px-4 py-2 rounded-lg hover:bg-violet-500 transition duration-300">
                     <svg class="h-5 w-5" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
                         <g id="SVGRepo_bgCarrier" stroke-width="0"></g>
                         <g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g>
@@ -153,7 +153,7 @@
                 </a>
             </li>
             <li>
-                <a href="#about" @click="active = 'About'; activeDropdown = ''; activeDropdownLink = ''; sidebarOpen = false" :class="active === 'About' ? 'bg-violet-500' : ''" class="flex items-center gap-2 px-4 py-2 rounded-lg hover:bg-violet-500 transition duration-300">
+                <a href="/#about" @click="active = 'About'; activeDropdown = ''; activeDropdownLink = ''; sidebarOpen = false" :class="active === 'About' ? 'bg-violet-500' : ''" class="flex items-center gap-2 px-4 py-2 rounded-lg hover:bg-violet-500 transition duration-300">
                     <svg class="h-6 w-6" viewBox="0 0 512 512" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" fill="#000000">
                         <g id="SVGRepo_bgCarrier" stroke-width="0"></g>
                         <g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g>
@@ -171,7 +171,7 @@
                 </a>
             </li>
             <li>
-                <a href="#contact" @click="active = 'Contact'; activeDropdown = ''; activeDropdownLink = ''; sidebarOpen = false" :class="active === 'Contact' ? 'bg-violet-500' : ''" class="flex items-center gap-2 px-4 py-2 rounded-lg hover:bg-violet-500 transition duration-300">
+                <a href="/#contact" @click="active = 'Contact'; activeDropdown = ''; activeDropdownLink = ''; sidebarOpen = false" :class="active === 'Contact' ? 'bg-violet-500' : ''" class="flex items-center gap-2 px-4 py-2 rounded-lg hover:bg-violet-500 transition duration-300">
                     <svg class="h-5 w-5" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" stroke="#000000">
                         <g id="SVGRepo_bgCarrier" stroke-width="0"></g>
                         <g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g>

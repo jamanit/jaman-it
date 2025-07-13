@@ -51,6 +51,8 @@
         @yield('content')
     </main>
 
+    @include('services.service-modal')
+
     @include('layouts.footer')
 
     @include('layouts.scroll-to-top')
