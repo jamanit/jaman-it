@@ -31,7 +31,7 @@
                 </div>
 
                 <div class="text-center">
-                    <button type="submit" x-bind:disabled="isSubmitting" class="px-6 py-3 bg-gradient-to-r from-blue-500 to-pink-500 text-white font-semibold rounded-lg shadow-lg transition duration-300 hover:scale-105 disabled:opacity-50 disabled:cursor-not-allowed">
+                    <button type="submit" x-bind:disabled="isSubmitting" class="cursor-pointer px-6 py-3 bg-gradient-to-r from-blue-500 to-pink-500 text-white font-semibold rounded-lg shadow-lg transition duration-300 hover:scale-105 disabled:opacity-50 disabled:cursor-not-allowed">
                         <span x-show="!isSubmitting">Get Download Link</span>
                         <span x-show="isSubmitting">Processing...</span>
                     </button>
@@ -44,7 +44,7 @@
                     <h3 class="font-semibold text-lg mb-3">{{ session('video_title') }}</h3>
 
                     <p class="mb-2">✅ Your video is ready! Click the button below to download:</p>
-                    <a href="{{ session('download_link') }}" target="_blank" class="inline-block px-4 py-2 bg-white text-green-700 font-medium rounded hover:bg-gray-100 transition">
+                    <a href="{{ session('download_link') }}" target="_blank" class="cursor-pointer inline-block px-4 py-2 bg-white text-green-700 font-medium rounded hover:bg-gray-100 transition">
                         Download Video
                     </a>
                 </div>
