@@ -26,7 +26,7 @@
                 </div>
             </form>
 
-            <div id="result" class="mt-8 bg-slate-700 p-4 rounded-xl shadow text-white hidden"></div>
+            <div id="result" class="mt-8 bg-slate-700 p-4 rounded-xl shadow text-white hidden leading-relaxed whitespace-pre-line"></div>
         </div>
     </section>
 
@@ -35,40 +35,77 @@
         const resultDiv = document.getElementById('result');
         const submitBtn = document.getElementById('submitBtn');
 
-        form.addEventListener('submit', async function(e) {
-            e.preventDefault();
-            const text = document.getElementById('text').value;
-            if (!text.trim()) return;
+        function escapeHtml(text) {
+            return text
+                .replace(/&/g, "&amp;")
+                .replace(/</g, "&lt;")
+                .replace(/>/g, "&gt;")
+                .replace(/"/g, "&quot;")
+                .replace(/'/g, "&#039;");
+        }
 
-            resultDiv.classList.remove('hidden');
-            resultDiv.innerHTML = "<span class='opacity-70'>Thinking...</span>";
-            submitBtn.disabled = true;
+        function formatReply(text) {
+            let escaped = escapeHtml(text);
 
-            try {
-                const response = await fetch("/chat-ai", {
-                    method: "POST",
-                    headers: {
-                        "Content-Type": "application/json",
-                        "X-CSRF-TOKEN": document.querySelector('meta[name="csrf-token"]').getAttribute("content"),
-                    },
-                    body: JSON.stringify({
-                        text
-                    })
-                });
+            // Handle bold **text**
+            escaped = escaped.replace(/\*\*(.*?)\*\*/g, "<strong>$1</strong>");
 
-                const data = await response.json();
-                if (!response.ok) {
-                    throw new Error(data.message || 'Something went wrong');
-                }
+            // Handle italic *text*
+            escaped = escaped.replace(/\*(.*?)\*/g, "<em>$1</em>");
 
-                const formattedReply = data.reply
-                    .replace(/\n{2,}/g, '<br><br>')
-                    .replace(/\n/g, '<br>');
+            // Handle inline code `text`
+            escaped = escaped.replace(/`([^`]+?)`/g, "<code class='bg-gray-800 text-green-400 px-1 rounded'>$1</code>");
 
-                resultDiv.innerHTML = `<strong>AI:</strong><br>${formattedReply}`;
+        // Handle code block ```...```
+        escaped = escaped.replace(/```([\s\S]*?)```/g, "<pre class='bg-gray-800 text-green-300 p-3 rounded overflow-x-auto mb-4'><code>$1</code></pre>");
 
-            } catch (error) {
-                resultDiv.innerHTML = `<span class="text-red-400">Error: ${error.message}</span>`;
+        // Handle unordered lists - item
+        escaped = escaped.replace(/(?:^|\n)- (.*?)(?=\n|$)/g, "<li>$1</li>");
+        if (escaped.includes("<li>")) {
+            escaped = escaped.replace(/(<li>.*?<\/li>)+/gs, (match) => `<ul class="list-disc pl-5 space-y-1 mb-4">${match}</ul>`);
+        }
+
+        // Handle ordered lists 1. item
+        escaped = escaped.replace(/(?:^|\n)\d+\. (.*?)(?=\n|$)/g, "<li>$1</li>");
+        if (escaped.includes("<li>")) {
+            escaped = escaped.replace(/(<li>.*?<\/li>)+/gs, (match) => `<ol class="list-decimal pl-5 space-y-1 mb-4">${match}</ol>`);
+        }
+
+        // Handle paragraphs and line breaks
+        escaped = escaped.replace(/\n{2,}/g, "<br><br>"); // double newline → paragraph
+        escaped = escaped.replace(/\n/g, "<br>"); // single newline → line break
+
+        return `<strong class="text-pink-400">AI:</strong><br>${escaped}`;
+    }
+
+    form.addEventListener("submit", async function(e) {
+        e.preventDefault();
+        const text = document.getElementById("text").value;
+        if (!text.trim()) return;
+
+        resultDiv.classList.remove("hidden");
+        resultDiv.innerHTML = "<span class='opacity-70'>Thinking...</span>";
+        submitBtn.disabled = true;
+
+        try {
+            const response = await fetch("/chat-ai", {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json",
+                    "X-CSRF-TOKEN": document.querySelector('meta[name="csrf-token"]').getAttribute("content"),
+                },
+                body: JSON.stringify({
+                    text
+                })
+            });
+
+            const data = await response.json();
+            if (!response.ok) throw new Error(data.message || "Something went wrong");
+
+            resultDiv.innerHTML = formatReply(data.reply);
+
+        } catch (error) {
+            resultDiv.innerHTML = `<span class="text-red-400">Error: ${error.message}</span>`;
             }
 
             submitBtn.disabled = false;
