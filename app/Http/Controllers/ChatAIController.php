@@ -8,6 +8,8 @@ use Illuminate\Support\Facades\Log;
 use App\Models\Service;
 use Illuminate\Support\Facades\Cookie;
 use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Str;
 
 class ChatAIController extends Controller
 {
@@ -43,8 +45,6 @@ class ChatAIController extends Controller
 
         $text = $request->input('text');
         $reply = 'Sorry, unable to reply.';
-
-        // Use session ID to distinguish web users
         $sessionId = $request->session()->getId();
         $filename = "chat_ai_histories/web_{$sessionId}.json";
 
@@ -53,9 +53,13 @@ class ChatAIController extends Controller
             $history = json_decode(Storage::get($filename), true);
         } else {
             $history = [
-                ['role' => 'system', 'content' => "You are a helpful assistant for web users."]
+                ['role' => 'system', 'content' => "You are a helpful and intelligent assistant that interacts with users across various platforms. You help answer questions, and provide relevant information based on their requests."]
             ];
         }
+
+        // Retrieve data from database based on user intent
+        $intent = $this->detectIntent($text);
+        $this->handleIntent($intent, $history);
 
         // Add new user message to history
         $history[] = ['role' => 'user', 'content' => $text];
@@ -117,5 +121,71 @@ class ChatAIController extends Controller
         return response()->json([
             'message' => 'No history found to delete.'
         ], 404);
+    }
+
+    private function detectIntent(string $text): string
+    {
+        $lowerText = Str::lower(trim($text));
+
+        $negativeKeywords = ['tidak', 'bukan', 'no', 'belum'];
+        if (Str::contains($lowerText, $negativeKeywords)) {
+            return 'default';
+        }
+
+        $serviceKeywords = ['layanan', 'produk', 'service', 'available', 'tersedia'];
+        if (Str::contains($lowerText, $serviceKeywords)) {
+            return 'product';
+        }
+
+        return 'default';
+    }
+
+    private function handleIntent(string $intent, array &$history): void
+    {
+        switch ($intent) {
+            case 'product':
+                $services = DB::table('services')
+                    ->select(
+                        'thumbnail',
+                        'title',
+                        'slug',
+                        'description',
+                        'content',
+                        'view_total',
+                        'order',
+                        'is_popular',
+                        'is_active',
+                        'created_at',
+                        'updated_at',
+                    )
+                    ->where('is_active', true)
+                    ->orderBy('order')
+                    ->get();
+
+                if ($services->isEmpty()) {
+                    $history[] = [
+                        'role' => 'system',
+                        'content' => "There are currently no services available."
+                    ];
+                } else {
+                    $structured = $services->map(function ($item) {
+                        return (array) $item;
+                    })->toArray();
+
+                    $history[] = [
+                        'role' => 'system',
+                        'content' => "Here is raw service data you can analyze or summarize:",
+                    ];
+
+                    $history[] = [
+                        'role' => 'system',
+                        'content' => json_encode($structured, JSON_PRETTY_PRINT)
+                    ];
+                }
+                break;
+
+            default:
+                break;
+        }
     }
 }
