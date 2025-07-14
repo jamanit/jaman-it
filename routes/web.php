@@ -8,6 +8,8 @@ use Illuminate\Support\Facades\Route;
 
 Route::get('/', [App\Http\Controllers\HomeController::class, 'index'])->name('home.index');
 
+Route::get('/resume/{name?}/{lang?}', [App\Http\Controllers\ResumeController::class, 'index'])->name('resume.index');
+
 Route::get('/auth/{provider}/redirect', [App\Http\Controllers\SocialiteController::class, 'redirect'])->name('socialite.redirect');
 Route::get('/auth/{provider}/callback', [App\Http\Controllers\SocialiteController::class, 'callback'])->name('socialite.callback');
 Route::get('/auth/create-password', [App\Http\Controllers\SocialiteController::class, 'create_password'])->name('create-password');
