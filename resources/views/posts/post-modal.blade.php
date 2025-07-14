@@ -10,7 +10,7 @@
              </button>
          </div>
 
-         <div class="p-6 mb-4 overflow-y-auto space-y-4" style="max-height: calc(90vh - 80px); padding-bottom: 2rem;">
+         <div class="p-6 mb-4 overflow-y-auto space-y-4 scrollbar-thin scrollbar-thumb-slate-600 scrollbar-track-slate-950" style="max-height: calc(90vh - 80px); padding-bottom: 2rem;">
              <template x-if="post.image">
                  <img :src="post.image" alt="Image" class="w-full h-78 object-cover rounded-lg shadow-md">
              </template>

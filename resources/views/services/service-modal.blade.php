@@ -11,7 +11,7 @@
             </button>
         </div>
 
-        <div class="overflow-y-auto px-6 py-4 mb-4 space-y-4" style="max-height: calc(90vh - 80px);">
+        <div class="overflow-y-auto px-6 py-4 mb-4 space-y-4 scrollbar-thin scrollbar-thumb-slate-600 scrollbar-track-slate-950" style="max-height: calc(90vh - 80px);">
             @php shuffle($serviceBadgeColors); @endphp
 
             <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6">
