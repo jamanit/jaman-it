@@ -63,19 +63,35 @@
                 <p><i class="fas fa-home"></i> Jl. Komp. Guru SD Patimura RT. 26 Telanaipura, Kota Jambi, Indonesia.</p>
             @endif
 
-            <div class="grid grid-cols-2">
-                <div>
-                    <p><i class="fas fa-phone"></i> <a href="tel:+6289508475453" class="text-blue-600" target="_blank">+62 895-0847-5453</a> (Telepon)</p>
-                    <p><i class="fab fa-whatsapp"></i> <a href="https://wa.me/6289508475453" class="text-blue-600" target="_blank">+62 895-0847-5453</a> (WhatsApp)</p>
-                    <p><i class="fas fa-envelope"></i> <a href="mailto:rikidavidtra.2310@gmail.com" class="text-blue-600" target="_blank">rikidavidtra.2310@gmail.com</a></p>
-                    <p><i class="fab fa-linkedin"></i> <a href="https://www.linkedin.com/in/riki-davidtra-a30752237/" class="text-blue-600" target="_blank">linkedin.com/in/riki-davidtra-a30752237</a></p>
+            @if ($lang === 'en')
+                <div class="grid grid-cols-2">
+                    <div>
+                        <p><i class="fas fa-phone"></i> <a href="tel:+6289508475453" class="text-blue-600" target="_blank">+62 895-0847-5453</a> (Phone Number)</p>
+                        <p><i class="fab fa-whatsapp"></i> <a href="https://wa.me/6289508475453" class="text-blue-600" target="_blank">+62 895-0847-5453</a> (WhatsApp)</p>
+                        <p><i class="fas fa-envelope"></i> <a href="mailto:rikidavidtra.2310@gmail.com" class="text-blue-600" target="_blank">rikidavidtra.2310@gmail.com</a></p>
+                        <p><i class="fab fa-linkedin"></i> <a href="https://www.linkedin.com/in/riki-davidtra-a30752237/" class="text-blue-600" target="_blank">linkedin.com/in/riki-davidtra-a30752237</a></p>
+                    </div>
+                    <div>
+                        <p><i class="fab fa-github"></i> <a href="https://github.com/jamanit" class="text-blue-600" target="_blank">github.com/jamanit</a></p>
+                        <p><i class="fab fa-youtube"></i> <a href="https://www.youtube.com/@jaman_it" class="text-blue-600" target="_blank">youtube.com/@jaman_it</a></p>
+                        <p><i class="fa-solid fa-globe"></i> <a href="https://rport.my.id" class="text-blue-600" target="_blank">rport.my.id</a> (My Website)</p>
+                    </div>
                 </div>
-                <div>
-                    <p><i class="fab fa-github"></i> <a href="https://github.com/jamanit" class="text-blue-600" target="_blank">github.com/jamanit</a></p>
-                    <p><i class="fab fa-youtube"></i> <a href="https://www.youtube.com/@jaman_it" class="text-blue-600" target="_blank">youtube.com/@jaman_it</a></p>
-                    <p><i class="fa-solid fa-globe"></i> <a href="https://rport.my.id" class="text-blue-600" target="_blank">rport.my.id</a> (My Website)</p>
+            @else
+                <div class="grid grid-cols-2">
+                    <div>
+                        <p><i class="fas fa-phone"></i> <a href="tel:+6289508475453" class="text-blue-600" target="_blank">+62 895-0847-5453</a> (Nomor Telepon)</p>
+                        <p><i class="fab fa-whatsapp"></i> <a href="https://wa.me/6289508475453" class="text-blue-600" target="_blank">+62 895-0847-5453</a> (WhatsApp)</p>
+                        <p><i class="fas fa-envelope"></i> <a href="mailto:rikidavidtra.2310@gmail.com" class="text-blue-600" target="_blank">rikidavidtra.2310@gmail.com</a></p>
+                        <p><i class="fab fa-linkedin"></i> <a href="https://www.linkedin.com/in/riki-davidtra-a30752237/" class="text-blue-600" target="_blank">linkedin.com/in/riki-davidtra-a30752237</a></p>
+                    </div>
+                    <div>
+                        <p><i class="fab fa-github"></i> <a href="https://github.com/jamanit" class="text-blue-600" target="_blank">github.com/jamanit</a></p>
+                        <p><i class="fab fa-youtube"></i> <a href="https://www.youtube.com/@jaman_it" class="text-blue-600" target="_blank">youtube.com/@jaman_it</a></p>
+                        <p><i class="fa-solid fa-globe"></i> <a href="https://rport.my.id" class="text-blue-600" target="_blank">rport.my.id</a> (Website Saya)</p>
+                    </div>
                 </div>
-            </div>
+            @endif
         </div>
 
         <div class="border-t-2 border-black pt-2"></div>
