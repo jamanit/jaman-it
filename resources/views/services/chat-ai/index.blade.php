@@ -19,16 +19,33 @@
                     </form>
                 </div>
 
-                <div class="bg-slate-700 rounded-xl py-4 mb-6">
-                    <div id="chatMessages" class="space-y-4 max-h-[80vh] overflow-y-auto px-4">
+                <div class="bg-slate-800 rounded-xl py-4 mb-6">
+                    <div id="chatMessages" class="space-y-4 max-h-[80vh] overflow-y-auto px-4 scrollbar-thin scrollbar-thumb-slate-600 scrollbar-track-slate-700">
                         @if ($history && count($history))
                             @foreach ($history as $item)
-                                <div class="flex {{ $item['role'] === 'user' ? 'justify-end' : 'justify-start' }}">
-                                    <div class="w-full px-4 py-2 rounded-lg text-sm {{ $item['role'] === 'user' ? 'bg-blue-600 text-white text-right' : 'bg-pink-600 text-white text-left' }}">
-                                        <strong class="block mb-1">{{ ucfirst($item['role']) }}</strong>
-                                        <div class="prose prose-invert prose-sm max-w-none">{!! \Illuminate\Support\Str::markdown($item['content']) !!}</div>
+                                @if ($item['role'] === 'user')
+                                    <div class="flex justify-end">
+                                        <div class="bg-violet-500/40 text-violet-100 rounded-lg text-sm p-4 max-w-[80%]">
+                                            <strong class="block mb-1 text-violet-200 text-right">You</strong>
+                                            <div class="overflow-x-auto scrollbar-thin scrollbar-thumb-violet-400 scrollbar-track-violet-600/30">
+                                                <div class="inline-block py-4 whitespace-nowrap">
+                                                    {!! \Illuminate\Support\Str::markdown($item['content']) !!}
+                                                </div>
+                                            </div>
+                                        </div>
                                     </div>
-                                </div>
+                                @else
+                                    <div class="flex justify-start">
+                                        <div class="bg-pink-500/30 text-pink-100 text-left rounded-lg text-sm p-4 w-full">
+                                            <strong class="block text-pink-200">AI</strong>
+                                            <div class="overflow-x-auto scrollbar-thin scrollbar-thumb-pink-400 scrollbar-track-pink-600/30">
+                                                <div class="inline-block py-4 whitespace-nowrap">
+                                                    {!! \Illuminate\Support\Str::markdown($item['content']) !!}
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                @endif
                             @endforeach
                         @else
                             <div id="noHistoryMessage" class="text-center text-gray-400">No chat history yet.</div>
@@ -97,18 +114,27 @@
 
                 chatMessages.innerHTML += `
                 <div class="flex justify-end">
-                    <div class="w-full px-4 py-2 bg-blue-600 text-white rounded-lg text-sm text-right">
-                        <strong class="block mb-1">User</strong>
-                        ${marked.parse(text)}
+                    <div class="bg-violet-500/40 text-violet-100 rounded-lg text-sm p-4 max-w-[80%]">
+                        <strong class="block mb-1 text-violet-200 text-right">You</strong>
+                        <div class="overflow-x-auto scrollbar-thin scrollbar-thumb-violet-400 scrollbar-track-violet-600/30">
+                            <div class="inline-block py-4 whitespace-nowrap">
+                                ${marked.parse(text)}
+                            </div>
+                        </div>
                     </div>
                 </div>
+                
                 <div class="flex justify-start">
-                    <div class="w-full px-4 py-2 bg-pink-600 text-white rounded-lg text-sm text-left">
-                        <strong class="block mb-1">AI</strong>
-                        ${marked.parse(data.reply)}
+                    <div class="bg-pink-500/30 text-pink-100 text-left rounded-lg text-sm p-4 w-full">
+                        <strong class="block text-pink-200">AI</strong>
+                        <div class="overflow-x-auto scrollbar-thin scrollbar-thumb-pink-400 scrollbar-track-pink-600/30">
+                            <div class="inline-block py-4 whitespace-nowrap">
+                                ${marked.parse(data.reply)}
+                            </div>
+                        </div>
                     </div>
                 </div>
-            `;
+                `;
 
                 resultDiv.classList.add("hidden");
                 document.getElementById("text").value = '';
