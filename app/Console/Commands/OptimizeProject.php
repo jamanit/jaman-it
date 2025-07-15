@@ -3,6 +3,7 @@
 namespace App\Console\Commands;
 
 use Illuminate\Console\Command;
+use Illuminate\Support\Facades\File;
 
 class OptimizeProject extends Command
 {
@@ -18,7 +19,7 @@ class OptimizeProject extends Command
      *
      * @var string
      */
-    protected $description = 'Clear and optimize common Laravel caches including Filament.';
+    protected $description = 'Clear and optimize common Laravel caches including Filament. Also deletes Laravel logs.';
 
     /**
      * Execute the console command.
@@ -39,6 +40,15 @@ class OptimizeProject extends Command
             $this->call($command);
         }
 
+        $logPath = storage_path('logs');
+        $deleted = 0;
+
+        foreach (File::glob($logPath . '/*.log') as $file) {
+            File::delete($file);
+            $deleted++;
+        }
+
+        $this->info("Deleted $deleted log file(s).");
         $this->info('All done! Laravel project optimized.');
     }
 }
