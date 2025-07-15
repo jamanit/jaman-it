@@ -147,6 +147,21 @@ class WordToPdfController extends Controller
             $finishedJob = $cloudconvert->jobs()->get($job->getId());
             Log::info('Job finished', ['status' => $finishedJob->getStatus()]);
 
+            foreach ($finishedJob->getTasks() as $task) {
+                Log::info('Task info', [
+                    'name'    => $task->getName(),
+                    'status'  => $task->getStatus(),
+                    'code'    => $task->getCode(),
+                    'message' => $task->getMessage(),
+                    'result'  => $task->getResult(),
+                ]);
+
+                // Tangkap kalau ada task yang error
+                if ($task->getStatus() === 'error') {
+                    throw new \Exception("Task `{$task->getName()}` failed: " . $task->getMessage());
+                }
+            }
+
             $exportTask = collect($finishedJob->getTasks())
                 ->firstWhere(fn($task) => $task->getName() === 'export-my-file');
 
