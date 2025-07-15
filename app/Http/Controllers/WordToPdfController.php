@@ -104,9 +104,9 @@ class WordToPdfController extends Controller
         try {
             Log::info('Start file conversion');
 
-            $file         = $request->file('word_file');
+            $file = $request->file('word_file');
             $originalName = pathinfo($file->getClientOriginalName(), PATHINFO_FILENAME);
-            $slugName     = 'converted-' . Str::slug($originalName) . '.pdf';
+            $slugName = 'converted-' . Str::slug($originalName) . '.pdf';
 
             $cloudconvert = new CloudConvert([
                 'api_key' => env('CLOUDCONVERT_API_KEY'),
@@ -156,7 +156,6 @@ class WordToPdfController extends Controller
                     'result'  => $task->getResult(),
                 ]);
 
-                // Tangkap kalau ada task yang error
                 if ($task->getStatus() === 'error') {
                     throw new \Exception("Task `{$task->getName()}` failed: " . $task->getMessage());
                 }
