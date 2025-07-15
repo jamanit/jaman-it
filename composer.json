@@ -9,6 +9,7 @@
         "php": "^8.2",
         "althinect/filament-spatie-roles-permissions": "^2.3",
         "barryvdh/laravel-dompdf": "^3.1",
+        "cloudconvert/cloudconvert-php": "^3.4",
         "filament/filament": "^3.3",
         "joaopaulolndev/filament-edit-profile": "^1.0",
         "laravel/framework": "^12.0",

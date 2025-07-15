@@ -26,7 +26,9 @@ Route::get('/tiktok-saver', [App\Http\Controllers\TikTokSaverController::class, 
 Route::post('/tiktok-saver/download', [App\Http\Controllers\TikTokSaverController::class, 'download'])->name('tiktok-saver.download');
 Route::get('/tiktok-saver/stream', [App\Http\Controllers\TikTokSaverController::class, 'stream'])->name('tiktok-saver.stream');
 
-
 Route::get('/chat-ai', [App\Http\Controllers\ChatAIController::class, 'index'])->name('chat-ai.index');
 Route::post('/chat-ai/chat', [App\Http\Controllers\ChatAIController::class, 'chat'])->name('chat-ai.chat');
 Route::delete('/chat-ai/clear-history', [App\Http\Controllers\ChatAIController::class, 'clearHistory'])->name('chat-ai.clearHistory');
+
+Route::get('/word-to-pdf', [App\Http\Controllers\WordToPdfController::class, 'index'])->name('word-to-pdf.index');
+Route::post('/word-to-pdf/convert', [App\Http\Controllers\WordToPdfController::class, 'convert'])->name('word-to-pdf.convert');
