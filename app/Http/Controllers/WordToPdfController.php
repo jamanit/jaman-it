@@ -11,6 +11,7 @@ use CloudConvert\CloudConvert;
 use CloudConvert\Models\Job;
 use CloudConvert\Models\Task;
 use Throwable;
+use Illuminate\Support\Facades\Storage;
 
 class WordToPdfController extends Controller
 {
@@ -139,7 +140,9 @@ class WordToPdfController extends Controller
             }
 
             Log::info('Uploading file to CloudConvert');
-            $cloudconvert->tasks()->upload($uploadTask, fopen($file->getRealPath(), 'r'));
+            $tempPath = $file->store('temp');
+            $absolutePath = storage_path('app/' . $tempPath);
+            $cloudconvert->tasks()->upload($uploadTask, fopen($absolutePath, 'r'));
 
             Log::info('Waiting for job completion');
             $cloudconvert->jobs()->wait($job);
@@ -179,6 +182,8 @@ class WordToPdfController extends Controller
             Log::info('PDF URL ready', ['url' => $fileUrl]);
 
             $pdfContents = file_get_contents($fileUrl);
+
+            Storage::delete($tempPath);
 
             return response($pdfContents, 200, [
                 'Content-Type'        => 'application/pdf',
