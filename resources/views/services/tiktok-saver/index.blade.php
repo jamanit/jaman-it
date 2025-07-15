@@ -49,12 +49,6 @@
                     </a>
                 </div>
             @endif
-
-            @if (session('quota_limit') && session('quota_remaining'))
-                <div class="mt-6 text-sm text-gray-400 text-center">
-                    API Quota: {{ session('quota_remaining') }} / {{ session('quota_limit') }} requests remaining today.
-                </div>
-            @endif
         </div>
     </section>
 @endsection

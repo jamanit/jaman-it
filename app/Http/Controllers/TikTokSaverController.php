@@ -7,6 +7,7 @@ use Illuminate\Support\Facades\Http;
 use App\Models\Service;
 use Illuminate\Support\Facades\Cookie;
 use Symfony\Component\HttpFoundation\StreamedResponse;
+use Illuminate\Support\Facades\Log;
 
 class TikTokSaverController extends Controller
 {
@@ -35,41 +36,65 @@ class TikTokSaverController extends Controller
             'url.url' => 'The URL you entered is not valid.'
         ]);
 
-        try {
-            $rawUrl   = $request->input('url');
-            $cleanUrl = strtok($rawUrl, '?');
+        $rawUrl   = $request->input('url');
+        $cleanUrl = strtok($rawUrl, '?');
+        $apiKeys  = explode(',', env('RAPIDAPI_KEY'));
+        $host     = 'tiktok-download-without-watermark.p.rapidapi.com';
+        $endpoint = "https://{$host}/analysis";
 
-            $response = Http::withHeaders([
-                'x-rapidapi-key'  => env('RAPIDAPI_KEY'),
-                'x-rapidapi-host' => 'tiktok-download-without-watermark.p.rapidapi.com',
-            ])->get('https://tiktok-download-without-watermark.p.rapidapi.com/analysis', [
-                'url' => $cleanUrl,
-                'hd'  => '0', // use '1' for HD if needed
-            ]);
-            // dd($response->status(), $response->body());
+        $response = null;
+        $data = null;
+        $success = false;
+        $lastError = '';
 
-            if (!$response->successful()) {
-                return back()->withErrors(['Failed to contact the TikTok downloader service. Please try again later.']);
-            }
-
-            $data = $response->json();
-
-            // Extract download link and video title
-            $downloadLink = $data['data']['play'] ?? null;
-            $videoTitle   = $data['data']['title'] ?? 'TikTok Video';
-
-            if (!$downloadLink) {
-                return back()->withErrors(['Sorry, we couldn’t find a downloadable video from that URL.']);
-            }
-
-            return redirect()
-                ->route('tiktok-saver.index')
-                ->with([
-                    'download_link' => $downloadLink,
-                    'video_title'   => $videoTitle
+        foreach ($apiKeys as $key) {
+            try {
+                $response = Http::withHeaders([
+                    'x-rapidapi-key'  => trim($key),
+                    'x-rapidapi-host' => $host,
+                ])->get($endpoint, [
+                    'url' => $cleanUrl,
+                    'hd'  => '1',
                 ]);
-        } catch (\Exception $e) {
-            return back()->withErrors(['Something went wrong. Please try again. (' . $e->getMessage() . ')']);
+
+                if ($response->successful()) {
+                    $data = $response->json();
+                    $success = true;
+                    break;
+                } else {
+                    $lastError = $response->body();
+                }
+            } catch (\Exception $e) {
+                $lastError = $e->getMessage();
+                continue;
+            }
         }
+
+        if (!$success) {
+            Log::error('TikTok downloader failed', [
+                'error' => $lastError,
+                'url'   => $cleanUrl,
+            ]);
+
+            return back()->withErrors([
+                'Oops! The TikTok download service is currently unavailable. Please try again later.'
+            ]);
+        }
+
+        $downloadLink = $data['data']['play'] ?? null;
+        $videoTitle   = $data['data']['title'] ?? 'TikTok Video';
+
+        if (!$downloadLink) {
+            return back()->withErrors([
+                'Sorry, we couldn’t extract a downloadable video from that TikTok link.'
+            ]);
+        }
+
+        return redirect()
+            ->route('tiktok-saver.index')
+            ->with([
+                'download_link' => $downloadLink,
+                'video_title'   => $videoTitle
+            ]);
     }
 }
