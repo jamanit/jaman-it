@@ -68,7 +68,7 @@ class ChatAIController extends Controller
         $history = array_merge([$history[0]], array_slice($history, -20));
 
         // Get API keys from .env
-        $apiKeys = array_map('trim', explode(',', env('OPENROUTER_API_KEY_ARRAY')));
+        $apiKeys = array_map('trim', explode(',', env('OPENROUTER_API_KEY')));
 
         foreach ($apiKeys as $apiKey) {
             try {

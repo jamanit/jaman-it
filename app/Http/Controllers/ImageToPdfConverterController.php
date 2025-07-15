@@ -8,6 +8,7 @@ use Barryvdh\DomPDF\Facade\Pdf;
 use Illuminate\Support\Str;
 use App\Models\Service;
 use Illuminate\Support\Facades\Cookie;
+use Illuminate\Support\Facades\Log;
 
 class ImageToPdfConverterController extends Controller
 {
@@ -62,12 +63,17 @@ class ImageToPdfConverterController extends Controller
                 'hAlign'      => $request->horizontal_position,
             ])->setPaper('a4', $request->orientation);
 
-            // Create a file name from the name of the first image
             $filename = 'converted-' . Str::slug($originalName) . '.pdf';
 
             return $pdf->download($filename);
         } catch (\Exception $e) {
-            return redirect()->back()->withErrors(['convert' => 'Failed to convert PDF. Please try again.']);
+            Log::error('Image to PDF conversion failed', [
+                'error' => $e->getMessage()
+            ]);
+
+            return redirect()->back()->withErrors([
+                'convert' => 'Oops! Something went wrong while converting your images to PDF. Please try again later.'
+            ]);
         }
     }
 }
