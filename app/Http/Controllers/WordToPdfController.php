@@ -41,64 +41,64 @@ class WordToPdfController extends Controller
             $originalName = pathinfo($file->getClientOriginalName(), PATHINFO_FILENAME);
             $slugName = 'converted-' . Str::slug($originalName) . '.pdf';
 
-            $cloudconvert = new CloudConvert([
-                'api_key' => env('CLOUDCONVERT_API_KEY'),
-                'sandbox' => false,
-            ]);
+            $result = $this->tryApiKeys(function ($cloudconvert) use ($file) {
+                $job = (new Job())
+                    ->addTask(new Task('import/upload', 'import-file'))
+                    ->addTask(
+                        (new Task('convert', 'convert-file'))
+                            ->set('input', 'import-file')
+                            ->set('input_format', $file->getClientOriginalExtension())
+                            ->set('output_format', 'pdf')
+                            ->set('engine', 'libreoffice')
+                    )
+                    ->addTask(
+                        (new Task('export/url', 'export-my-file'))
+                            ->set('input', 'convert-file')
+                    );
 
-            $job = (new Job())
-                ->addTask(new Task('import/upload', 'import-file'))
-                ->addTask(
-                    (new Task('convert', 'convert-file'))
-                        ->set('input', 'import-file')
-                        ->set('input_format', $file->getClientOriginalExtension())
-                        ->set('output_format', 'pdf')
-                        ->set('engine', 'libreoffice')
-                )
-                ->addTask(
-                    (new Task('export/url', 'export-my-file'))
-                        ->set('input', 'convert-file')
-                );
+                $job = $cloudconvert->jobs()->create($job);
 
-            $job = $cloudconvert->jobs()->create($job);
+                $uploadTask = collect($job->getTasks())
+                    ->firstWhere(fn($task) => $task->getName() === 'import-file');
 
-            $uploadTask = collect($job->getTasks())
-                ->firstWhere(fn($task) => $task->getName() === 'import-file');
-
-            if (!$uploadTask) {
-                throw new \Exception('Upload task not found in job.');
-            }
-
-            $tempPath = $file->store('word-to-pdf', 'public');
-            $absolutePath = storage_path('app/public/' . $tempPath);
-            $cloudconvert->tasks()->upload($uploadTask, fopen($absolutePath, 'r'));
-
-            $cloudconvert->jobs()->wait($job);
-            $finishedJob = $cloudconvert->jobs()->get($job->getId());
-
-            foreach ($finishedJob->getTasks() as $task) {
-                if ($task->getStatus() === 'error') {
-                    throw new \Exception("Task `{$task->getName()}` failed: " . $task->getMessage());
+                if (!$uploadTask) {
+                    throw new \Exception('Upload task not found in job.');
                 }
-            }
 
-            $exportTask = collect($finishedJob->getTasks())
-                ->firstWhere(fn($task) => $task->getName() === 'export-my-file');
+                $tempPath = $file->store('word-to-pdf', 'public');
+                $absolutePath = storage_path('app/public/' . $tempPath);
+                $cloudconvert->tasks()->upload($uploadTask, fopen($absolutePath, 'r'));
 
-            if (!$exportTask) {
-                throw new \Exception('Export task not found.');
-            }
+                $cloudconvert->jobs()->wait($job);
+                $finishedJob = $cloudconvert->jobs()->get($job->getId());
 
-            $result = $exportTask->getResult();
+                foreach ($finishedJob->getTasks() as $task) {
+                    if ($task->getStatus() === 'error') {
+                        throw new \Exception("Task `{$task->getName()}` failed: " . $task->getMessage());
+                    }
+                }
 
-            if (!isset($result->files[0]->url)) {
-                throw new \Exception('File URL not found in export task.');
-            }
+                $exportTask = collect($finishedJob->getTasks())
+                    ->firstWhere(fn($task) => $task->getName() === 'export-my-file');
 
-            $fileUrl = $result->files[0]->url;
-            $pdfContents = file_get_contents($fileUrl);
+                if (!$exportTask) {
+                    throw new \Exception('Export task not found.');
+                }
 
-            Storage::disk('public')->delete($tempPath);
+                $result = $exportTask->getResult();
+
+                if (!isset($result->files[0]->url)) {
+                    throw new \Exception('File URL not found in export task.');
+                }
+
+                return [
+                    'file_url' => $result->files[0]->url,
+                    'temp_path' => $tempPath
+                ];
+            });
+
+            $pdfContents = file_get_contents($result['file_url']);
+            Storage::disk('public')->delete($result['temp_path']);
 
             return response($pdfContents, 200, [
                 'Content-Type'        => 'application/pdf',
@@ -111,8 +111,34 @@ class WordToPdfController extends Controller
             ]);
 
             return back()->withErrors([
-                'convert' => 'Sorry, we couldn’t convert your file right now. Please try again later.'
+                'convert' => 'Maaf, file tidak bisa dikonversi saat ini. Silakan coba lagi nanti.'
             ]);
         }
+    }
+
+    private function tryApiKeys(\Closure $callback)
+    {
+        $keys = explode(',', env('CLOUDCONVERT_API_KEYS'));
+
+        foreach ($keys as $key) {
+            $cloudconvert = new CloudConvert([
+                'api_key' => trim($key),
+                'sandbox' => false,
+            ]);
+
+            try {
+                return $callback($cloudconvert);
+            } catch (\CloudConvert\Exceptions\HttpClientException $e) {
+                if (in_array($e->getCode(), [402, 429])) {
+                    // 402 = Payment Required / Limit habis
+                    // 429 = Too Many Requests
+                    continue;
+                }
+
+                throw $e;
+            }
+        }
+
+        throw new \Exception('Semua API Key gagal dipakai (limit habis atau error).');
     }
 }
