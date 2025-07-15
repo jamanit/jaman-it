@@ -140,8 +140,8 @@ class WordToPdfController extends Controller
             }
 
             Log::info('Uploading file to CloudConvert');
-            $tempPath = $file->store('temp');
-            $absolutePath = storage_path('app/' . $tempPath);
+            $tempPath = $file->store('temp', 'local');
+            $absolutePath = storage_path('app/private/' . $tempPath);
             $cloudconvert->tasks()->upload($uploadTask, fopen($absolutePath, 'r'));
 
             Log::info('Waiting for job completion');
@@ -183,7 +183,7 @@ class WordToPdfController extends Controller
 
             $pdfContents = file_get_contents($fileUrl);
 
-            Storage::delete($tempPath);
+            Storage::disk('local')->delete($tempPath);
 
             return response($pdfContents, 200, [
                 'Content-Type'        => 'application/pdf',
