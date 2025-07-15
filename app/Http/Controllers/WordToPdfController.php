@@ -36,75 +36,7 @@ class WordToPdfController extends Controller
             'word_file' => 'required|mimes:doc,docx|max:5120'
         ]);
 
-        // try {
-        //     $file         = $request->file('word_file');
-        //     $originalName = pathinfo($file->getClientOriginalName(), PATHINFO_FILENAME);
-        //     $slugName     = 'converted-' . Str::slug($originalName) . '.pdf';
-
-        //     $cloudconvert = new CloudConvert([
-        //         'api_key' => env('CLOUDCONVERT_API_KEY'),
-        //         'sandbox' => false,
-        //     ]);
-
-        //     $job = (new Job())
-        //         ->addTask(new Task('import/upload', 'import-file'))
-        //         ->addTask(
-        //             (new Task('convert', 'convert-file'))
-        //                 ->set('input', 'import-file')
-        //                 ->set('input_format', $file->getClientOriginalExtension())
-        //                 ->set('output_format', 'pdf')
-        //                 ->set('engine', 'libreoffice')
-        //         )
-        //         ->addTask(
-        //             (new Task('export/url', 'export-my-file'))
-        //                 ->set('input', 'convert-file')
-        //         );
-
-        //     $job = $cloudconvert->jobs()->create($job);
-
-        //     $uploadTask = collect($job->getTasks())
-        //         ->firstWhere(fn($task) => $task->getName() === 'import-file');
-
-        //     if (!$uploadTask) {
-        //         throw new \Exception('Upload task not found in job.');
-        //     }
-
-        //     $cloudconvert->tasks()->upload($uploadTask, fopen($file->getRealPath(), 'r'));
-
-        //     $cloudconvert->jobs()->wait($job);
-
-        //     $finishedJob = $cloudconvert->jobs()->get($job->getId());
-
-        //     $exportTask = collect($finishedJob->getTasks())
-        //         ->firstWhere(fn($task) => $task->getName() === 'export-my-file');
-
-        //     $result = $exportTask->getResult();
-
-        //     if (!isset($result->files[0]->url)) {
-        //         throw new \Exception('File URL not found in export task.');
-        //     }
-
-        //     $fileUrl     = $result->files[0]->url;
-        //     $pdfContents = file_get_contents($fileUrl);
-
-        //     return response($pdfContents, 200, [
-        //         'Content-Type'        => 'application/pdf',
-        //         'Content-Disposition' => "attachment; filename=\"$slugName\""
-        //     ]);
-        // } catch (Throwable $e) {
-        //     Log::error('File conversion failed.', [
-        //         'message' => $e->getMessage(),
-        //         'trace'   => $e->getTraceAsString(),
-        //     ]);
-
-        //     return back()->withErrors([
-        //         'convert' => 'Sorry, we couldn’t convert your file right now. Please try again later.'
-        //     ]);
-        // }
-
         try {
-            Log::info('Start file conversion');
-
             $file = $request->file('word_file');
             $originalName = pathinfo($file->getClientOriginalName(), PATHINFO_FILENAME);
             $slugName = 'converted-' . Str::slug($originalName) . '.pdf';
@@ -114,7 +46,6 @@ class WordToPdfController extends Controller
                 'sandbox' => false,
             ]);
 
-            Log::info('Creating job');
             $job = (new Job())
                 ->addTask(new Task('import/upload', 'import-file'))
                 ->addTask(
@@ -130,7 +61,6 @@ class WordToPdfController extends Controller
                 );
 
             $job = $cloudconvert->jobs()->create($job);
-            Log::info('Job created', ['job_id' => $job->getId()]);
 
             $uploadTask = collect($job->getTasks())
                 ->firstWhere(fn($task) => $task->getName() === 'import-file');
@@ -139,26 +69,14 @@ class WordToPdfController extends Controller
                 throw new \Exception('Upload task not found in job.');
             }
 
-            Log::info('Uploading file to CloudConvert');
-            $tempPath = $file->store('temp', 'local');
-            $absolutePath = storage_path('app/private/' . $tempPath);
+            $tempPath = $file->store('word-to-pdf', 'public');
+            $absolutePath = storage_path('app/public/' . $tempPath);
             $cloudconvert->tasks()->upload($uploadTask, fopen($absolutePath, 'r'));
 
-            Log::info('Waiting for job completion');
             $cloudconvert->jobs()->wait($job);
-
             $finishedJob = $cloudconvert->jobs()->get($job->getId());
-            Log::info('Job finished', ['status' => $finishedJob->getStatus()]);
 
             foreach ($finishedJob->getTasks() as $task) {
-                Log::info('Task info', [
-                    'name'    => $task->getName(),
-                    'status'  => $task->getStatus(),
-                    'code'    => $task->getCode(),
-                    'message' => $task->getMessage(),
-                    'result'  => $task->getResult(),
-                ]);
-
                 if ($task->getStatus() === 'error') {
                     throw new \Exception("Task `{$task->getName()}` failed: " . $task->getMessage());
                 }
@@ -172,18 +90,15 @@ class WordToPdfController extends Controller
             }
 
             $result = $exportTask->getResult();
-            Log::info('Export task result', ['result' => $result]);
 
             if (!isset($result->files[0]->url)) {
                 throw new \Exception('File URL not found in export task.');
             }
 
             $fileUrl = $result->files[0]->url;
-            Log::info('PDF URL ready', ['url' => $fileUrl]);
-
             $pdfContents = file_get_contents($fileUrl);
 
-            Storage::disk('local')->delete($tempPath);
+            Storage::disk('public')->delete($tempPath);
 
             return response($pdfContents, 200, [
                 'Content-Type'        => 'application/pdf',
