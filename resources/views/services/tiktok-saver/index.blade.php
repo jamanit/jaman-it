@@ -44,8 +44,11 @@
                     <h3 class="font-semibold text-lg mb-3">{{ session('video_title') }}</h3>
 
                     <p class="mb-2">✅ Your video is ready! Click the button below to download:</p>
-                    <a href="{{ session('download_link') }}" target="_blank" class="cursor-pointer inline-block px-4 py-2 bg-white text-green-700 font-medium rounded hover:bg-gray-100 transition">
-                        Download Video
+                    <a href="{{ route('tiktok-saver.stream', [
+                        'url' => session('download_link'),
+                        'title' => Str::slug(session('video_title'), '-') . '.mp4',
+                    ]) }}" class="cursor-pointer inline-block px-4 py-2 bg-white text-green-700 font-medium rounded hover:bg-gray-100 transition">
+                        Download Video (HD)
                     </a>
                 </div>
             @endif

@@ -97,4 +97,20 @@ class TikTokSaverController extends Controller
                 'video_title'   => $videoTitle
             ]);
     }
+
+    public function stream(Request $request)
+    {
+        $videoUrl = $request->query('url');
+        $title = $request->query('title', 'tiktok-video.mp4');
+
+        if (!$videoUrl) {
+            abort(404);
+        }
+
+        return response()->streamDownload(function () use ($videoUrl) {
+            echo file_get_contents($videoUrl);
+        }, $title, [
+            'Content-Type' => 'video/mp4'
+        ]);
+    }
 }

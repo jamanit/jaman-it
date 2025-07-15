@@ -20,10 +20,12 @@ Route::post('/loadMorePost', [App\Http\Controllers\HomeController::class, 'loadM
 Route::post('/send-message', [App\Http\Controllers\HomeController::class, 'sendMessage'])->name('home.sendMessage');
 
 Route::get('/image-to-pdf', [App\Http\Controllers\ImageToPdfConverterController::class, 'index'])->name('image-to-pdf.index');
-Route::post('/image-to-pdf', [App\Http\Controllers\ImageToPdfConverterController::class, 'convert'])->name('image-to-pdf.convert');
+Route::post('/image-to-pdf/convert', [App\Http\Controllers\ImageToPdfConverterController::class, 'convert'])->name('image-to-pdf.convert');
 
 Route::get('/tiktok-saver', [App\Http\Controllers\TikTokSaverController::class, 'index'])->name('tiktok-saver.index');
-Route::post('/tiktok-saver', [App\Http\Controllers\TikTokSaverController::class, 'download'])->name('tiktok-saver.download');
+Route::post('/tiktok-saver/download', [App\Http\Controllers\TikTokSaverController::class, 'download'])->name('tiktok-saver.download');
+Route::get('/tiktok-saver/stream', [App\Http\Controllers\TikTokSaverController::class, 'stream'])->name('tiktok-saver.stream');
+
 
 Route::get('/chat-ai', [App\Http\Controllers\ChatAIController::class, 'index'])->name('chat-ai.index');
 Route::post('/chat-ai/chat', [App\Http\Controllers\ChatAIController::class, 'chat'])->name('chat-ai.chat');
