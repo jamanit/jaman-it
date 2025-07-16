@@ -41,12 +41,10 @@ class WordToPdfController extends Controller
         try {
             $files = $request->file('word_files');
 
-            // Jika hanya satu file, kembalikan sebagai PDF tunggal
             if (count($files) === 1) {
                 return $this->convertSingleFile($files[0]);
             }
 
-            // Jika multiple files, buat zip archive
             return $this->convertMultipleFiles($files);
         } catch (Throwable $e) {
             Log::error('File conversion failed.', [
@@ -137,7 +135,6 @@ class WordToPdfController extends Controller
             'sandbox' => false,
         ]);
 
-        // Pastikan direktori penyimpanan ada
         $tempDir = 'word-to-pdf';
         Storage::disk('public')->makeDirectory($tempDir);
 
@@ -210,14 +207,12 @@ class WordToPdfController extends Controller
                 $fileUrl = $result->files[0]->url;
                 $pdfContents = file_get_contents($fileUrl);
 
-                // Tambahkan file PDF ke zip
                 if ($zip->addFromString($slugName, $pdfContents)) {
                     $successCount++;
                 }
 
                 Storage::disk('public')->delete($tempPath);
             } catch (\Exception $e) {
-                // Log error untuk file ini tetapi lanjutkan dengan file berikutnya
                 Log::error('Error converting file: ' . $file->getClientOriginalName(), [
                     'message' => $e->getMessage()
                 ]);
@@ -225,20 +220,17 @@ class WordToPdfController extends Controller
             }
         }
 
-        // Tutup zip hanya jika berhasil dibuka
         if ($zipStatus === TRUE) {
             $zip->close();
         }
 
         if ($successCount === 0) {
-            // Hapus file zip kosong jika ada
             if (file_exists($zipPath)) {
                 unlink($zipPath);
             }
             throw new \Exception('No files were successfully converted.');
         }
 
-        // Kirim file zip sebagai response
         return response()->download($zipPath, $zipFileName)->deleteFileAfterSend(true);
     }
 }
