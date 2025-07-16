@@ -27,7 +27,7 @@
 
                 <div>
                     <label class="block text-sm font-medium mb-2">Upload Word File (.doc / .docx)</label>
-                    <input type="file" name="word_file" multiple accept=".doc,.docx" class="w-full bg-slate-700 border border-slate-600 text-white rounded-lg px-4 py-2 focus:outline-none focus:ring-2 focus:ring-pink-500 cursor-pointer">
+                    <input type="file" name="word_files[]" multiple accept=".doc,.docx" class="w-full bg-slate-700 border border-slate-600 text-white rounded-lg px-4 py-2 focus:outline-none focus:ring-2 focus:ring-pink-500 cursor-pointer">
                 </div>
 
                 <div class="text-center">
